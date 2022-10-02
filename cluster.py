@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib as mpl
 import norm
 
-def set_axis_labels(ax, x, y, z=None):
+def axis_labels(ax, x, y, z=None):
     ax.set_xlabel(x)
     ax.set_ylabel(y)
     if z != None:
@@ -43,7 +43,7 @@ def plot(X, U, Ud=None, C=None,
         ax.scatter(*X[:3, xT], color=cmap(cnorm(c)), label=c_name)
         ax.scatter(*X[:3, xF], color=cmap(cnorm(c)), marker="x")
 
-    set_axis_labels(ax, *axes_names)
+    axis_labels(ax, *axes_names[:3])
     if compare:
         ax.scatter([], [], [], color='k', marker="x", label=f"Errors: {error}")
     ax.legend()

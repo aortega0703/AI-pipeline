@@ -8,7 +8,7 @@ def softmax(x): return np.exp(x) / np.sum(np.exp(x), axis=0)
 def dsoftmax(x): return softmax(x) * (np.eye(x.shape[0]) - softmax(x).T)
 
 
-def feedforward(X, W, B=None, phi=None, dphi=None, cluster=False, Yd=None, full=False):
+def feedforward(X, W, B=None, phi=None, dphi=None, cluster=False, Yd=None, train=False):
     if phi is None:
         phi = sigmoid
     if dphi is None:
@@ -29,8 +29,8 @@ def feedforward(X, W, B=None, phi=None, dphi=None, cluster=False, Yd=None, full=
     else:
         dE = Y[k] - Yd
         E = np.average(norm.norm["Euclidean2"](Y[k] - Yd))/2
-    if full:
-        return Y, V, E, dE
+    if train:
+        return Y, V, dE
     else:
         return Y[k], E
 
@@ -40,7 +40,7 @@ def update(X, Yd, phi, dphi, W, B=None, cluster=False, eta=1):
     k = len(W) - 1
 
     # feedforward
-    Y, V, E, dE = feedforward(X, W, B,phi, dphi,  cluster, Yd, full=True)
+    Y, V, dE = feedforward(X, W, B,phi, dphi,  cluster, Yd, train=True)
     # backpropagation
     delta = [None] * (k+1)
     if cluster:
@@ -57,11 +57,11 @@ def update(X, Yd, phi, dphi, W, B=None, cluster=False, eta=1):
         W[l] -= eta * (delta[l] @ Y[l-1].T) / p
         if B != None:
             B[l] -= eta * (delta[l] @ np.ones((p, 1))) / p
-    return delta, E, W, B
+    return W, B, delta
 
 
 def train(sets, name, hidden, epochs, phi=None, dphi=None,
-          eta=1, bias=True, cluster=False):
+          eta=1, bias=True, classify=False, logs=False):
     if phi is None:
         phi = sigmoid
     if dphi is None:
@@ -79,7 +79,23 @@ def train(sets, name, hidden, epochs, phi=None, dphi=None,
     else:
         B = None
 
+    if logs:
+        delta = []
+        Y = {k: [] for k in sets.keys()}
+        E = {k: [] for k in sets.keys()}
+
     for e in range(epochs):
-        _, _, W, B = update(sets[name][0], sets[name][1], 
-            phi, dphi, W, B, cluster, eta)
+        W, B, delta_curr = update(sets[name][0], sets[name][1], 
+            phi, dphi, W, B, classify, eta)
+        if not logs:
+            continue
+        delta.append([np.mean(norm.norm["Euclidean2"](delta_curr[l]))
+                     for l in range(1, k+1)])
+        for curr_set in sets.keys():
+            Y_set, E_set = feedforward(sets[curr_set][0], W, B, phi, dphi,
+                                   classify, sets[curr_set][1], False)
+            Y[curr_set].append(Y_set)
+            E[curr_set].append(E_set)
+    if logs:
+        return W, B, delta, Y, E
     return W, B
