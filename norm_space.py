@@ -1,4 +1,5 @@
 import numpy as np
+import itertools as iter
 from numpy.linalg import inv
 
 norm = {
@@ -15,6 +16,3 @@ def dist_matrix(X, Y, norm=norm["Euclidean2"]):
     for x, y in iter.product(range(X.shape[1]), range(Y.shape[1])):
         D[x, y] = norm(X[:, x] - Y[:, y])
     return D
-
-
-

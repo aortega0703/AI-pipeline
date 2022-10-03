@@ -1,7 +1,10 @@
+import norm_space
+
 import matplotlib.pyplot as plt
 import numpy as np
 import matplotlib as mpl
-import norm
+import itertools as iter
+
 
 def axis_labels(ax, x, y, z=None):
     ax.set_xlabel(x)
@@ -11,13 +14,21 @@ def axis_labels(ax, x, y, z=None):
 
 
 def match(U, Ud):
-    D = norm.dist_matrix(U.T, Ud.T, norm.norm["Manhattan"])
-    return U[np.argmin(D, axis=0), :]
+    D = norm_space.dist_matrix(U.T, Ud.T,
+        norm=norm_space.norm["Manhattan"])
+    min_p = None
+    min_d = np.inf
+    for p in iter.permutations(range(U.shape[0])):
+        d = np.sum([D[i, n] for n, i in enumerate(p)])
+        if d < min_d:
+            min_p, min_d = p, d
+    return U[min_p, :]
+
 
 def plot(X, U, Ud=None, C=None,
                  title="Clusters",
                  axes_names=["$X_0$", "$X_1$", "$Y_0$"],
-                 cluster_names=None):
+                 cluster_names=[]):
     C_N = U.shape[0]
     compare = Ud is not None
     error = 0
@@ -29,8 +40,10 @@ def plot(X, U, Ud=None, C=None,
 
     U = np.argmax(U, axis=0)
     Ud = np.argmax(Ud, axis=0) if compare else U
-    if cluster_names is None:
-        cluster_names = [f"C{c}" for c in range(C_N)]
+
+    for c in range(len(cluster_names), C_N):
+        cluster_names.append(f"C{c}")
+
     for c in range(C_N):
         x = U == c
         xT = x & (Ud == c)
@@ -42,6 +55,9 @@ def plot(X, U, Ud=None, C=None,
             error += e_c
         ax.scatter(*X[:3, xT], color=cmap(cnorm(c)), label=c_name)
         ax.scatter(*X[:3, xF], color=cmap(cnorm(c)), marker="x")
+        if C is not None:
+            ax.scatter(*C[:3, c], color=cmap(cnorm(c)),
+                       marker="*", edgecolors="black", s=40)
 
     axis_labels(ax, *axes_names[:3])
     if compare:

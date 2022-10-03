@@ -1,4 +1,4 @@
-import norm
+import norm_space
 import numpy as np
 from scipy.special import expit
 
@@ -8,11 +8,7 @@ def softmax(x): return np.exp(x) / np.sum(np.exp(x), axis=0)
 def dsoftmax(x): return softmax(x) * (np.eye(x.shape[0]) - softmax(x).T)
 
 
-def feedforward(X, W, B=None, phi=None, dphi=None, cluster=False, Yd=None, train=False):
-    if phi is None:
-        phi = sigmoid
-    if dphi is None:
-        dphi = dsigmoid
+def feedforward(X, W, B=None, phi=sigmoid, dphi=dsigmoid, cluster=False, Yd=None, train=False):
     k = len(W) - 1
     V = [None] * (k+1)
     Y = [None] * (k+1)
@@ -28,12 +24,16 @@ def feedforward(X, W, B=None, phi=None, dphi=None, cluster=False, Yd=None, train
         E = 0
     else:
         dE = Y[k] - Yd
-        E = np.average(norm.norm["Euclidean2"](Y[k] - Yd))/2
+        E = np.average(norm_space.norm["Euclidean2"](Y[k] - Yd))/2
     if train:
         return Y, V, dE
     else:
         return Y[k], E
 
+
+def eval(X, W, B=None, phi=sigmoid, dphi=dsigmoid, cluster=False, Yd=None):
+    return feedforward(X, W, B=B, phi=phi, dphi=dphi,
+        cluster=cluster, Yd=Yd, train=False)
 
 def update(X, Yd, phi, dphi, W, B=None, cluster=False, eta=1):
     p = X.shape[1]
@@ -60,12 +60,8 @@ def update(X, Yd, phi, dphi, W, B=None, cluster=False, eta=1):
     return W, B, delta
 
 
-def train(sets, name, hidden, epochs, phi=None, dphi=None,
+def train(sets, name, hidden, epochs, phi=sigmoid, dphi=dsigmoid,
           eta=1, bias=True, classify=False, logs=False):
-    if phi is None:
-        phi = sigmoid
-    if dphi is None:
-        dphi = dsigmoid
     neurons = [sets[name][0].shape[0], *hidden, sets[name][1].shape[0]]
     k = len(neurons) - 1
 
@@ -89,7 +85,7 @@ def train(sets, name, hidden, epochs, phi=None, dphi=None,
             phi, dphi, W, B, classify, eta)
         if not logs:
             continue
-        delta.append([np.mean(norm.norm["Euclidean2"](delta_curr[l]))
+        delta.append([np.mean(norm_space.norm["Euclidean2"](delta_curr[l]))
                      for l in range(1, k+1)])
         for curr_set in sets.keys():
             Y_set, E_set = feedforward(sets[curr_set][0], W, B, phi, dphi,
