@@ -25,7 +25,7 @@ def match(U, Ud):
     return U[min_p, :]
 
 
-def plot(X, U, Ud=None, C=None,
+def plot(ax, X, U, Ud=None, C=None,
                  title="Clusters",
                  axes_names=["$X_0$", "$X_1$", "$Y_0$"],
                  cluster_names=[]):
@@ -35,8 +35,7 @@ def plot(X, U, Ud=None, C=None,
 
     cmap = plt.get_cmap("viridis")
     cnorm = mpl.colors.Normalize(vmin=0, vmax=C_N-1)
-    plt.figure()
-    ax = plt.axes(projection="3d", title=title)
+    ax.set_title(title)
 
     U = np.argmax(U, axis=0)
     Ud = np.argmax(Ud, axis=0) if compare else U
