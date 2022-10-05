@@ -1,4 +1,4 @@
 *.csv
-*.mat
 *.pyc
 \.history
+\.data
