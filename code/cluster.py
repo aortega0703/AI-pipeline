@@ -47,10 +47,11 @@ def plot(ax, X, U, Ud=None, C=None,
         x = U == c
         xT = x & (Ud == c)
         xF = x & (Ud != c)
-        c_name = cluster_names[c] + f": {np.sum(xT)}"
+        t_c = np.sum(xT)
+        c_name = cluster_names[c] + f": {t_c}"
         if compare:
             e_c = np.sum(xF)
-            c_name += f" - {e_c}"
+            c_name += f"/{t_c+e_c} ({t_c/(t_c+e_c):.2%})"
             error += e_c
         ax.scatter(*X[:3, xT], color=cmap(cnorm(c)), label=c_name)
         ax.scatter(*X[:3, xF], color=cmap(cnorm(c)), marker="x")
@@ -60,5 +61,5 @@ def plot(ax, X, U, Ud=None, C=None,
 
     axis_labels(ax, *axes_names[:3])
     if compare:
-        ax.scatter([], [], [], color='k', marker="x", label=f"Errors: {error}")
+        ax.scatter([], [], [], color='k', marker="x", label=f"Errors: {error}/{U.shape[0]} ({error/U.shape[0]:.2%})")
     ax.legend()

@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 
 def get_data(file, header = None, index_col=None):
-    data = pd.read_csv(file, index_col=index_col, header=header).reset_index(drop=True)
+    data = pd.read_csv(file, index_col=index_col, header=header).dropna().reset_index(drop=True)
     N_S = len(data.index)
     axes_names = data.columns.to_list()
     indices = data.index
@@ -17,9 +17,9 @@ def normalize(points):
 
 
 def name_to_int(data):
-    names = data.unique()
+    names = list(map(str, data.unique()))
     name_map = dict(map(reversed, enumerate(names)))
-    return data.apply(lambda x: name_map[x]), names
+    return data.apply(lambda x: name_map[str(x)]), names
 
 
 def vectorize(data):

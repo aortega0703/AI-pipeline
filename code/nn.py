@@ -92,6 +92,8 @@ def train(sets, name, hidden, epochs, phi=sigmoid, dphi=dsigmoid,
                                    classify, sets[curr_set][1], False)
             Y[curr_set].append(Y_set)
             E[curr_set].append(E_set)
+        if (e+1) % (epochs*0.1) == 0:
+            print(f"{e+1}/{epochs} ({e/epochs:.0%})")
     if logs:
         return W, B, delta, Y, E
     return W, B
