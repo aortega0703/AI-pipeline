@@ -2,5 +2,6 @@
 history/
 data/
 report/
+images/
 
 !report/report.tex
