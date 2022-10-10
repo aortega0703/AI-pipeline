@@ -2,98 +2,111 @@ import norm_space
 import numpy as np
 from scipy.special import expit
 
-def sigmoid(x): return expit(x)
-def dsigmoid(x): return sigmoid(x) * (1 - sigmoid(x))
-def softmax(x): return np.exp(x) / np.sum(np.exp(x), axis=0)
-def dsoftmax(x): return softmax(x) * (np.eye(x.shape[0]) - softmax(x).T)
+sigmoid = (
+    lambda x: expit(x),
+    lambda x: sigmoid[0](x) * (1 - sigmoid[0](x)))
+softmax = (
+    lambda x: np.exp(x) / np.sum(np.exp(x), axis=0),
+    lambda X: np.array([
+        softmax[0](X[:, [x]]) * (np.eye(X.shape[0]) - softmax[0](X[:, [x]]).T)
+        for x in range(X.shape[1])]))
 
 
-def feedforward(X, W, B=None, phi=sigmoid, dphi=dsigmoid, cluster=False, Yd=None, train=False):
+def feedforward(X, W, B, phi, Yd):
     k = len(W) - 1
     V = [None] * (k+1)
     Y = [None] * (k+1)
     Y[0] = X
+
     for l in range(1, k+1):
         V[l] = W[l] @ Y[l-1]
         if B != None:
             V[l] += B[l]
-        Y[l] = phi(V[l])
-    if cluster:
-        Y[k] = softmax(V[k])
-    if Yd is None:
-        E = 0
+        Y[l] = phi[l][0](V[l])
+    
+    E = np.average(norm_space.norm["Manhattan"](Y[k] - Yd))/2
+    dE = Y[k] - Yd
+    return Y, V, E, dE
+
+def backpropagate(W, V, dE, phi):
+    p = V[-1].shape[1]
+    k = len(W) - 1
+    delta = [None] * (k+1)
+
+    delta[k] = phi[-1][1](V[k])
+    
+    if len(delta[k].shape) != 2:
+        delta[k] = np.concatenate([delta[k][c] @ dE[:, [c]]
+            for c in range(p)], axis=1)
     else:
-        dE = Y[k] - Yd
-        E = np.average(norm_space.norm["Euclidean2"](Y[k] - Yd))/2
-    if train:
-        return Y, V, dE
-    else:
-        return Y[k], E
+        delta[k] = delta[k] * dE
+
+    for l in reversed(range(1, k)):
+        delta[l] = (W[l+1].T @ delta[l+1]) * phi[l][1](V[l])
+    return delta
 
 
-def eval(X, W, B=None, phi=sigmoid, dphi=dsigmoid, cluster=False, Yd=None):
-    return feedforward(X, W, B=B, phi=phi, dphi=dphi,
-        cluster=cluster, Yd=Yd, train=False)
-
-def update(X, Yd, phi, dphi, W, B=None, cluster=False, eta=1):
+def update(X, Yd, W, B, eta, phi):
     p = X.shape[1]
     k = len(W) - 1
 
     # feedforward
-    Y, V, dE = feedforward(X, W, B,phi, dphi,  cluster, Yd, train=True)
+    Y, V, E, dE = feedforward(X, W, B, phi, Yd)
     # backpropagation
-    delta = [None] * (k+1)
-    if cluster:
-        delta[k] = np.concatenate([dsoftmax(V[k][:, [c]]) @ dE[:, [c]]
-                                   for c in range(p)], axis=1)
-    else:
-        delta[k] = dphi(V[k]) * dE
+    delta = backpropagate(W, V, dE, phi)
 
-    for l in reversed(range(1, k)):
-        delta[l] = (W[l+1].T @ delta[l+1]) * dphi(V[l])
-
-    # update
+    # update weights
     for l in range(1, k+1):
         W[l] -= eta * (delta[l] @ Y[l-1].T) / p
         if B != None:
             B[l] -= eta * (delta[l] @ np.ones((p, 1))) / p
     return W, B, delta
 
+def eval(X, W, B=None, phi=sigmoid, classify=False, Yd=0):
+    if type(phi) != list:
+        phi = [phi] * len(W)
+    if classify:
+        phi[-1] = softmax
 
-def train(sets, name, hidden, epochs, phi=sigmoid, dphi=dsigmoid,
-          eta=1, bias=True, classify=False, logs=False):
-    neurons = [sets[name][0].shape[0], *hidden, sets[name][1].shape[0]]
+    Y, _, E, _ = feedforward(X, W, B, phi, Yd)
+    return Y[-1], E
+
+def train(train_set, epochs, hidden, eta, phi=sigmoid,
+          classify=False, test_set={}):
+    neurons = [train_set[0].shape[0], *hidden, train_set[1].shape[0]]
     k = len(neurons) - 1
+    test_set["Train"] = train_set
 
+    B = [None] * (k+1)
     W = [None] * (k+1)
     for l in range(1, k+1):
+        B[l] = np.random.randn(neurons[l])[:, None]
         W[l] = np.random.randn(neurons[l], neurons[l-1])
-    if bias:
-        B = [None] * (k+1)
-        for l in range(1, k+1):
-            B[l] = np.random.randn(neurons[l])[:, None]
-    else:
-        B = None
+    
+    if type(phi) != list:
+        phi = [phi] * len(neurons)
+    if classify:
+        phi[-1] = softmax
 
-    if logs:
-        delta = []
-        Y = {k: [] for k in sets.keys()}
-        E = {k: [] for k in sets.keys()}
+    delta = []
+    E = {k: [] for k in test_set.keys()}
 
     for e in range(epochs):
-        W, B, delta_curr = update(sets[name][0], sets[name][1], 
-            phi, dphi, W, B, classify, eta)
-        if not logs:
-            continue
-        delta.append([np.mean(norm_space.norm["Euclidean2"](delta_curr[l]))
-                     for l in range(1, k+1)])
-        for curr_set in sets.keys():
-            Y_set, E_set = feedforward(sets[curr_set][0], W, B, phi, dphi,
-                                   classify, sets[curr_set][1], False)
-            Y[curr_set].append(Y_set)
-            E[curr_set].append(E_set)
+        W, B, delta_curr = update(train_set[0], train_set[1], W, B,
+            eta, phi)
+        delta_curr = [np.mean(norm_space.norm["Euclidean2"](delta_curr[l]))
+            for l in range(1, k+1)]
+        delta.append(delta_curr)
+
+        for t_name, t_set in test_set.items():
+            if type(t_set) == tuple:
+                t_X, t_Yd = t_set
+            else:
+                t_X, t_Yd = t_set, None
+            _, t_E = eval(t_X, W, B, phi, classify, t_Yd)
+            E[t_name].append(t_E)
+        
         if (e+1) % (epochs*0.1) == 0:
-            print(f"{e+1}/{epochs} ({e/epochs:.0%})")
-    if logs:
-        return W, B, delta, Y, E
-    return W, B
+           print(f"{e+1}/{epochs} ({e/epochs:.0%}):")
+           print(f"\tMean Gradient Length: {np.mean(delta_curr)}")
+    return W, B, delta, E

@@ -27,7 +27,7 @@ def match(U, Ud):
 
 def plot(ax, X, U, Ud=None, C=None,
                  title="Clusters",
-                 axes_names=["$X_0$", "$X_1$", "$Y_0$"],
+                 axes_names=["$X_0$", "$X_1$", "$X_2$"],
                  cluster_names=[]):
     C_N = U.shape[0]
     compare = Ud is not None
@@ -62,4 +62,4 @@ def plot(ax, X, U, Ud=None, C=None,
     axis_labels(ax, *axes_names[:3])
     if compare:
         ax.scatter([], [], [], color='k', marker="x", label=f"Errors: {error}/{U.shape[0]} ({error/U.shape[0]:.2%})")
-    ax.legend()
+    ax.legend(loc="upper right")
