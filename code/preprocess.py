@@ -17,9 +17,12 @@ def normalize(points):
 
 
 def name_to_int(data):
-    names = list(map(str, data.unique()))
+    names = data.unique()
     name_map = dict(map(reversed, enumerate(names)))
-    return data.apply(lambda x: name_map[str(x)]), names
+    data = data.apply(lambda x: name_map[x])
+    if len(names) == 2:
+        names = ["False", "True"]
+    return data, names
 
 
 def vectorize(data):
