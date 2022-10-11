@@ -72,16 +72,19 @@ def eval(X, W, B=None, phi=sigmoid, classify=False, Yd=0):
     return Y[-1], E
 
 def train(train_set, epochs, hidden, eta, phi=sigmoid,
-          classify=False, test_set={}):
+          classify=False, test_set={}, W=None, B=None):
     neurons = [train_set[0].shape[0], *hidden, train_set[1].shape[0]]
     k = len(neurons) - 1
     test_set["Train"] = train_set
 
-    B = [None] * (k+1)
-    W = [None] * (k+1)
-    for l in range(1, k+1):
-        B[l] = np.random.randn(neurons[l])[:, None]
-        W[l] = np.random.randn(neurons[l], neurons[l-1])
+    if W is None:
+        W = [None] * (k+1)
+        for l in range(1, k+1):
+            W[l] = np.random.randn(neurons[l], neurons[l-1])
+    if B is None:
+        B = [None] * (k+1)
+        for l in range(1, k+1):
+            B[l] = np.random.randn(neurons[l])[:, None]
     
     if type(phi) != list:
         phi = [phi] * len(neurons)
