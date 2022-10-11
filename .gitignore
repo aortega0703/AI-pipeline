@@ -1,7 +1,7 @@
 *.pyc
 history/
 data/
-report/
+report/*
 images/
 
 !report/report.tex
