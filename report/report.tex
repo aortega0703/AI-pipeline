@@ -40,33 +40,48 @@ $1.5$ billion objects, the Gaia Data Release 3\cite{gaia:dr3}, made available
 to the public on June 13, 2022, by the European Space Agency.
 
 With the advent of modern telescopes and satellites, the capability to detect
-even the dimest lights from space have reached heights previously unthinkable.
+even the dimmest lights from space have reached heights previously unthinkable.
 The gaia catalogue is but one of the many catalogues available to date, which
 serves to illustrate sheer quantity of data currently collected. Current
-telescopes are constantly surveing the sky in search for evermore objects to study.
+telescopes are constantly surveying the sky in search for evermore objects to study.
 
 This massive volume of data means that most of it will never get to be studied
-by hand by astronomers, instead better focusing their effors studying object 
+by hand by astronomers, instead better focusing their efforts studying object
 that are already known to possess qualities that may result of special interest.
 In order to identify these special observations from the sea of data available,
-multiple techniques have been developed.\cite{pulsar:dataset:oxford} In the 
+multiple techniques have been developed.\cite{pulsar:dataset:oxford} In the
 current paper, data from a specialized pulsar catalogue\cite{pulsar:dataset},
-is approached using multiple Arificial Intelligence techniques in order to
+is approached using multiple Artificial Intelligence techniques in order to
 identify possible pulsar star candidates.
 \todo{Sections list and definition}
 
 \section{The Problem}
-The name Pulsar (from \underline{Puls}ating st\underline{ar}) refers to a
-type of neutron star with powerfull magnetic fields.\cite{pulsar:definition:nasa}
-This field accelerates particles that may ultimately get thrown into the magnetic
-poles poles of its star, heating them. This heat gradient may be so high that
-the poles may act as hotspots radiating massives amount of heat into space,
-distinctively more than that of the rest of the star. As the star spins, 
+The name Pulsar (from \underline{Puls}ating st\underline{ar}) refers to rapidly
+rotating and strongly magnetized neutron stars.\cite{pulsar:definition:nasa}
+The magnetic field present in these stars, accelerates particles to high
+speeds around the star, which may ultimately get thrown into the magnetic
+poles poles of the pulsar, heating them. This heat gradient gets to be so high
+that the poles may act as hotspots, radiating massive amounts of heat into space,
+distinctively more than that of the rest of the star. As the star spins,
 these beams of electromagnetic waves (mostly on the X-ray spectrum) go in and out
 of view from earth at extremely regular periods, motion that makes it appear as
 pulsating in the sky, thus, giving it its name.
-\todo{complete}
 
+Pulsars get to occupy an special place in solving a wide range of physical and
+astronomical problems.\cite{pulsar:importance:kramer} The extreme conditions on
+these allow to test the limits of gravitational theories, solid state physics and
+plasma physics under extreme conditions among others. For most uses one needs
+not to know how pulsars work but treating them as natural clocks with stabilities
+similar to the best atomic clocks over time spans of months or years. 
+Correctly identifying these objects presents then a challenge worth approaching.
+
+Although over short periods of time, the signals received from each pulsar
+varies slightly on each rotation,\cite{pulsar:importance:kramer} it is possible
+to make an appropriate labeling using average measures over longer periods of time.
+In practice however, their dim signals means that almost all detections are a
+result of radio frequency interference and noise\cite{pulsar:dataset:explanation:lyon}.
+creating the necessity of finding new ways to differentiate real candidates
+from the rest.
 
 \section{Sampling}
 
