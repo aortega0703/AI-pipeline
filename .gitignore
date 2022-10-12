@@ -4,4 +4,5 @@ data/
 report/*
 images/
 
-!report/report.tex
+!*.tex
+!*.bib

@@ -17,42 +17,56 @@
 \title{Automated Labeling of Pulsar Star Candidates}
 
 \author{\IEEEauthorblockN{Andrés Felipe Ortega Montoya}
-\IEEEauthorblockA{\textit{Mathematical Engineering} \\
-Medellín, Colombia \\
-aortega7@eafit.edu.co}}
+    \IEEEauthorblockA{\textit{Mathematical Engineering} \\
+        Medellín, Colombia \\
+        aortega7@eafit.edu.co}}
 
 \maketitle
 
 \begin{abstract}
-\todo{}
+    \todo{}
 \end{abstract}
 
 \begin{IEEEkeywords}
-AI, Pulsar, Cluster, Supervised, Unsupervised
+    AI, Pulsar, Cluster, Supervised, Unsupervised
 \end{IEEEkeywords}
 
 \section{Introduction}
-\todo{}
-The name Pulsar (from \underline{Puls}ating st\underline{ar}) refers to a
-type of neutron star with powerfull magnetic fields.\cite{nasa:pulsar}
-This field reaches so great of a force that it accelerates particles that 
-ultimately get thrown into its poles generating and ultimately heating them.
-These poles act as hotspots that radiate heat into space, much more than
-the rest of the star. As the star spins, these beams of electromagnetic
-waves (mostly on the X-ray spectrum) go in and out of view from earth at an
-extremely regular periods. This motion makes the star appear as pulsating
-in the sky, thus, giving it its name.
+It is know that since ancient times humankind humankind has made an effort to
+catalogue the stars visible in the sky, from the $36$ stars listed in the
+\"three stars each\" by the ancient Babylonians in the $2000s\ B.C.$
+\cite{astronomy:history:dick}; to the last full-sky catalogue to date with over
+$1.5$ billion objects, the Gaia Data Release 3\cite{gaia:dr3}, made available
+to the public on June 13, 2022, by the European Space Agency.
 
-The number of stars in the \todo{bobeda celeste} is far too great to be
-classified by hand, having the \todo{registro de estrellas n} objects as of
-date. It has then been increasingly important to design techniques that ease
-the process of exploring this data. Among these it is to note the great impact
-that AI has had on the area of astronomy, being able to label correctly
-data points at an unprecedented pace. \todo{}To this day there is more data
-being collected than what could ever be checked by astronomers, so the current
-aproach is to search the giant databases for particular objects of interest and
-those results are considered candidates for classification until verified by
-some agency. 
+With the advent of modern telescopes and satellites, the capability to detect
+even the dimest lights from space have reached heights previously unthinkable.
+The gaia catalogue is but one of the many catalogues available to date, which
+serves to illustrate sheer quantity of data currently collected. Current
+telescopes are constantly surveing the sky in search for evermore objects to study.
+
+This massive volume of data means that most of it will never get to be studied
+by hand by astronomers, instead better focusing their effors studying object 
+that are already known to possess qualities that may result of special interest.
+In order to identify these special observations from the sea of data available,
+multiple techniques have been developed.\cite{pulsar:dataset:oxford} In the 
+current paper, data from a specialized pulsar catalogue\cite{pulsar:dataset},
+is approached using multiple Arificial Intelligence techniques in order to
+identify possible pulsar star candidates.
+\todo{Sections list and definition}
+
+\section{The Problem}
+The name Pulsar (from \underline{Puls}ating st\underline{ar}) refers to a
+type of neutron star with powerfull magnetic fields.\cite{pulsar:definition:nasa}
+This field accelerates particles that may ultimately get thrown into the magnetic
+poles poles of its star, heating them. This heat gradient may be so high that
+the poles may act as hotspots radiating massives amount of heat into space,
+distinctively more than that of the rest of the star. As the star spins, 
+these beams of electromagnetic waves (mostly on the X-ray spectrum) go in and out
+of view from earth at extremely regular periods, motion that makes it appear as
+pulsating in the sky, thus, giving it its name.
+\todo{complete}
+
 
 \section{Sampling}
 
@@ -61,7 +75,7 @@ In order to decide the best criterion for sampling
 
 \begin{figure}[h]
     \includegraphics[width=\linewidth]{sample:dist:train}
-    \caption{Slice of the training data distribution. \label{fig:sample:dist:train}}    
+    \caption{Slice of the training data distribution. \label{fig:sample:dist:train}}
 \end{figure}
 
 \begin{figure*}[h]
@@ -86,6 +100,6 @@ In order to decide the best criterion for sampling
     }
     \caption{Sampling algorithm}\label{sampling:alg}
 \end{algorithm}
+\bibliography{references.bib}
 \bibliographystyle{IEEEtran}
-\bibliography{references}
 \end{document}
