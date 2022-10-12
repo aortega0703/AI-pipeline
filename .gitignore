@@ -1,8 +1,11 @@
 *.pyc
-history/
+.vscode/
+.history/
 data/
 report/*
 images/
 
 !*.tex
 !*.bib
+
+report/report-blx.bib
