@@ -1,8 +1,9 @@
-\documentclass[conference]{IEEEtran}
+\documentclass[journal]{IEEEtran}
+
 \IEEEoverridecommandlockouts
 % The preceding line is only needed to identify funding in the first footnote.
 % If that is unneeded, please comment it out.
-\usepackage[backend=bibtex,style=ieee,natbib=true]{biblatex} 
+\usepackage[backend=biber,style=ieee,natbib=true]{biblatex} 
 \bibliography{references.bib}
 \usepackage{amsmath,amssymb,amsfonts}
 \usepackage{algorithm2e}
@@ -11,6 +12,7 @@
 \usepackage{textcomp}
 \usepackage{xcolor}
 \usepackage{hyperref}
+\setlength {\marginparwidth }{2cm}
 \usepackage{todonotes}
 
 \begin{document}
@@ -24,196 +26,259 @@
 
 \maketitle
 
+\listoftodos
+
 \begin{abstract}
-    \todo{}
+    \todo[inline]{Abstract}
 \end{abstract}
 
 \begin{IEEEkeywords}
     AI, Pulsar, Labeling
 \end{IEEEkeywords}
 
-\section{Introduction\label{sec:intro}}
-It is know that since ancient times humankind humankind has made an effort to
-catalogue the stars visible in the sky, from the $36$ stars listed in the
-\"three stars each\" by the ancient Babylonians in the $2000s\ B.C.$
-\cite{astronomy:history:north}; to the last full-sky catalogue to date with over
-$1.5$ billion objects, the Gaia Data Release 3 \cite{gaia:dr3:esa}, made available
-to the public on June 13, 2022, by the European Space Agency.
+\section{Introduction\label{sec:intro}} 
+\todo{check all figure captions}
+It is know that since ancient times
+humankind humankind has made an effort to catalogue the stars visible in the
+sky, from the $36$ stars listed in the \"three stars each\" by the ancient
+Babylonians in the $2000s\ B.C.$~\cite{astronomy:history:north}; to the last
+full-sky catalogue to date with over $1.5$ billion objects, the Gaia Data
+Release 3~\cite{gaia:dr3:esa}, made available to the public on June 13, 2022, by
+the European Space Agency.
 
 With the advent of modern telescopes and satellites, the capability to detect
 even the dimmest lights from space have reached heights previously unthinkable.
 The gaia catalogue is but one of the many catalogues available to date, which
 serves to illustrate sheer quantity of data currently collected. Current
-telescopes are constantly surveying the sky in search for evermore objects to study.
+telescopes are constantly surveying the sky in search for evermore objects to
+study.
 
 This massive volume of data means that most of it will never get to be studied
 by hand by astronomers, instead better focusing their efforts studying object
 that are already known to possess qualities that may result of special interest.
 In order to identify these special observations from the sea of data available,
-multiple techniques have been developed \cite{pulsar:dataset:explanation:lyon}.
-In the current paper, data from a specialized pulsar catalogue
-\cite{pulsar:dataset:lyon}, is approached using multiple Artificial Intelligence
-techniques in order to identify possible pulsar star candidates.
-\todo{Sections list and definition}
+multiple techniques have been developed~\cite{pulsar:dataset:explanation:lyon}.
+In the current paper, data from a specialized pulsar
+catalogue~\cite{pulsar:dataset:lyon}, is approached using multiple Artificial
+Intelligence techniques in order to identify possible pulsar star candidates.
+\todo[inline]{Sections list and definition}
 
-\section{The Problem\label{sec:problem}}
-The name Pulsar (from \underline{Puls}ating st\underline{ar}) refers to rapidly
-rotating and strongly magnetized neutron stars \cite{pulsar:definition:nasa}.
-The magnetic field present in these stars, accelerates particles to high
-speeds around the star, which may ultimately get thrown into the magnetic
-poles poles of the pulsar, heating them. This heat gradient gets to be so high
-that the poles may act as hotspots, radiating massive amounts of heat into space,
-distinctively more than that of the rest of the star. As the star spins,
-these beams of electromagnetic waves (mostly on the X-ray spectrum) go in and out
-of view from earth at extremely regular periods, motion that makes it appear as
-pulsating in the sky, thus, giving it its name.
+\section{The Problem\label{sec:problem}} The name Pulsar (from
+\underline{Puls}ating st\underline{ar}) refers to rapidly rotating and strongly
+magnetized neutron stars~\cite{pulsar:definition:nasa}. The magnetic field
+present in these stars, accelerates particles to high speeds around the star,
+which may ultimately get thrown into the magnetic poles poles of the pulsar,
+heating them. This heat gradient gets to be so high that the poles may act as
+hotspots, radiating massive amounts of heat into space, distinctively more than
+that of the rest of the star. As the star spins, these beams of electromagnetic
+waves (mostly on the X-ray spectrum) go in and out of view from earth at
+extremely regular periods, motion that makes it appear as pulsating in the sky,
+thus, giving it its name.
 
 Pulsars get to occupy an special place in solving a wide range of physical and
-astronomical problems \cite{pulsar:importance:kramer}. The extreme conditions on
-these allow to test the limits of gravitational theories, solid state physics and
-plasma physics under extreme conditions among others. For most uses one needs
-not to know how pulsars work but treating them as natural clocks with stabilities
-similar to the best atomic clocks over time spans of months or years.
-Correctly identifying these objects presents then a challenge worth approaching.
+astronomical problems~\cite{pulsar:importance:kramer}. The extreme conditions on
+these allow to test the limits of gravitational theories, solid state physics
+and plasma physics under extreme conditions among others. For most uses one
+needs not to know how pulsars work but treating them as natural clocks with
+stabilities similar to the best atomic clocks over time spans of months or
+years. Correctly identifying these objects presents then a challenge worth
+approaching.
 
 Although over short periods of time, the signals received from each pulsar
-varies slightly on each rotation \cite{pulsar:importance:kramer}, it is possible
-to make an appropriate labeling using average measures over longer periods of time.
-In practice however, their dim signals means that almost all detections are a
-result of radio frequency interference and noise \cite{pulsar:dataset:explanation:lyon}.
-creating the necessity of finding new ways to differentiate real candidates
-from the rest.
+varies slightly on each rotation~\cite{pulsar:importance:kramer}, it is possible
+to make an appropriate labeling using average measures over longer periods of
+time. In practice however, their dim signals means that almost all detections
+are a result of radio frequency interference and
+noise~\cite{pulsar:dataset:explanation:lyon}. creating the necessity of finding
+new ways to differentiate real candidates from the rest.
 
 \citet{pulsar:dataset:lyon} provides a dataset which contains a total of $17898$
 data points, $1639$ for them corresponding to real pulsar detections (verified
-by human annotators), and $16259$ detections associated to RFI or noise.
-The dataset was modified and split in Kaggle \cite{pulsar:dataset:kaggle} into one
-unlabelled set with $5370$ observations and a labelled set with $12528$ observations,
-the latter being the one used on this paper for purposes of training, testing,
-and validation of the techniques used.
+by human annotators), and $16259$ detections associated to RFI or noise. The
+dataset was modified and split in Kaggle~\cite{pulsar:dataset:kaggle} into one
+unlabelled set with $5370$ observations and a labelled set with $12528$
+observations, the latter being the one used on this paper for purposes of
+training, testing, and validation of the techniques used.
 
-As pulsars appear very dimmly in the sky, it is necessary to collect a few hundred
-to thousand of pulses together in order to discern them from the background noise,
-this collection is \textit{folded} into an integrated pulse profile
-\cite{pulsar:importance:kramer}. The dataset previously mentioned
-has 8 continuous variables per pulsar candidate, each with its corresponding
-binary labeling. The first $4$ of them are statistics that describe the
-integrated pulse profile of the star, while the last $4$ are similarly
-statistics from the DM-SNR (Dispersion Measure - Signal to Noise Ratio)
-\cite{pulsar:dataset:explanation:lyon}. The task being then to decide based
-on these 8 variables if any given object is a possible pulsar or not.
+As pulsars appear very dimmly in the sky, it is necessary to collect a few
+hundred to thousand of pulses together in order to discern them from the
+background noise, this collection is \textit{folded} into an integrated pulse
+profile~\cite{pulsar:importance:kramer}. The dataset previously mentioned has 8
+continuous variables per pulsar candidate, each with its corresponding binary
+labeling. The first $4$ of them are statistics that describe the integrated
+pulse profile of the star, while the last $4$ are similarly statistics from the
+DM-SNR (Dispersion Measure - Signal to Noise
+Ratio)~\cite{pulsar:dataset:explanation:lyon}. The task being then to decide
+based on these 8 variables if any given object is a possible pulsar or not.
 
 In the order that they appear on the database, the variables are:
 
-\begin{itemize}
-    \item Mean of the integrated profile.
-    \item Standard deviation of the integrated profile.
-    \item Excess kurtosis of the integrated profile.
-    \item Skewness of the integrated profile.
-    \item Mean of the DM-SNR curve.
-    \item Standard deviation of the DM-SNR curve.
-    \item Excess kurtosis of the DM-SNR curve.
-    \item Skewness of the DM-SNR curve.
-    \item Class 
-\end{itemize}
+\begin{figure}[ht]
+    \begin{itemize}
+        \item $X_0:$ Mean of the integrated profile.
+        \item $X_1:$ Standard deviation of the integrated profile.
+        \item $X_2:$ Excess kurtosis of the integrated profile.
+        \item $X_3:$ Skewness of the integrated profile.
+        \item $X_4:$ Mean of the DM-SNR curve.
+        \item $X_5:$ Standard deviation of the DM-SNR curve.
+        \item $X_6:$ Excess kurtosis of the DM-SNR curve.
+        \item $X_7:$ Skewness of the DM-SNR curve.
+        \item $Y:$ Class 
+    \end{itemize}
+    \caption{Attributes describing a pulsar candidate\label{fig:variables}}
+\end{figure}
 
 
 \section{State of the art\label{sec:state_of_art}}
 
-\todo{}
+\todo[inline]{State of the art}
 
-\section{Sampling\label{sec:sample}}
+\section{Sampling and preproccessing}
+\subsection{Sampling\label{sec:sample}}
 
-With any proposed model the goal is to best approximate certain dynamic,
-having no more at one's disposal that any observations of such event. The recolection
-of many of these measures is called a sample. 
-Before applying any technique that to tackle the problem at hand, one may
-first decide how to construct an appropiate sample that best represents the
-desired phenomenom.
+With any proposed model the goal is to best approximate certain dynamic, having
+no more at one's disposal that any observations of such event. The recolection
+of many of these measures is called a sample. Before applying any technique that
+to tackle the problem at hand, one may first decide how to construct an
+appropiate sample that best represents the desired phenomenom.
 
-For the current problem we desire to have a representation
-of equal proportionality of the labels over the dataset and any sample of it.
-Furthermore the data is to be split on $3$ mutually exclusive sets, one for
-training the models with a $60\%$ of the original data; and a test and validation
-sets with $20\%$ each. These last $2$ sets will serve to observe the generability
+For the current problem we desire to have a representation of equal
+proportionality of the labels over the dataset and any sample of it. Furthermore
+the data is to be split on $3$ mutually exclusive sets, one for training the
+models with a $60\%$ of the original data; and a test and validation sets with
+$20\%$ each. These last $2$ sets will serve to observe the generability
 capacities of the models proposed.
 
-The algorithm used to construct these samples is Algorithm~\ref{alg:sample}.
-In this it can be seen that the construction of the sample sets is done
-sequencially, meaning that each set will not have available any of the previously
-selected data and any bias introduced by the sampling method may propagate and
-increase further.
+The algorithm used to construct these samples is Algorithm~\ref{alg:sample}. In
+this it can be seen that the construction of the sample sets is done
+sequencially, meaning that each set will not have available any of the
+previously selected data and any bias introduced by the sampling method may
+propagate and increase further.
 
-\begin{algorithm}
+\begin{algorithm}[ht]
     $P = \{0.6,\ 0.2,\ 0.2\}$\\
     $P' \gets \{\}$\\
     $I \gets \{x:\ 0\leq x\leq \lvert S\rvert,\ x\in\mathbb{N}\}$\\
-    \For{$p \in P$}{
-        $F(x) \gets \text{PDF} \textbf{ with support } I$\\
-        $s \gets p\lvert S\rvert \textbf{ realizations from } F(x)$\\
+    \For{$p \in P$}{ $f(x) \gets \text{PDF} \textbf{ with support } I$\\
+        $s \gets p\lvert S\rvert \textbf{ realizations from } f(x)$\\
         $P' \gets P' \cup \{s\}$\\
         $I \gets I - s$\\
-    }
-    \caption{Sampling algorithm}\label{alg:sample}
+    } \caption{Sampling algorithm\label{alg:sample}}
 \end{algorithm}
 
+When filling each of our sets as described in Algorithm~\ref{alg:sample}, for
+the $N$ realizations generated from the desired distribution, they are document
+without replacement. This is to comply with the definition of the $3$ sets As
+mutually exclusive. The process of sampling without replacement involves that
+the index realized is removed from the support of the distribution and the
+remaining probabilities are normalized once more to generate the next
+realization.
+
 The sampling for the current paper was made indexing all of the data with
-sequencial natural numbers starting from $0$ and sampling those instead.
-To avoid the possible case of introducing bias on the samples, $3$ sampling
+sequencial natural numbers starting from $0$ and sampling those instead. To
+avoid the possible case of introducing bias on the samples, $3$ sampling
 distributions where chosen to compare their results, these being a uniform
 triangular, and normal distributions. As the number of observations is finite,
-each index $x$ is given a probability of $f(x)$ (with $f$ being the PDF) 
-scaled so that the sum of the PDF over all indices equals $1$. This accomodation
-is made in order to use indistinctively discrete or continuous distributions.
+each index $x$ is given a probability of $f(x)$ (with $f$ being the PDF) scaled
+so that the sum of the PDF over all indices equals $1$. This accomodation is
+made in order to use indistinctively discrete or continuous distributions.
 
 For a sample size $N$, the before mentioned sampling for each distribution is
 made as follows:
 \begin{itemize}
     \item Uniform: spans from $0$ to $N$
-    \item Triangular: mode of $N/2$, spans from $-1$ to $N+1$ so that indices
-        on the extremes get a non zero probability
+    \item Triangular: mode of $N/2$, spans from $-1$ to $N+1$ so that indices on
+        the extremes get a non zero probability
     \item Normal: mean of $N/2$, standard deviation of $N/6$
 \end{itemize}
 
 Each distribution has a corresponding self-information function that measures
 the "surprisal" of any outcome. The expected information of a given probability
-distribution is called entropy \cite{information:borda}. Under these definitions
+distribution is called entropy~\cite{information:borda}. Under these definitions
 one could argue that a distribution with a higher entropy corresponds to a
-better sampling technique, one more informative. Figure \ref{fig:sample:info}
+better sampling technique, one more informative. Figure~\ref{fig:sample:info}
 presents then the respective PDF's over the indices, with their corresponding
 self-information and entropy, from which we can infer that uniform sampling is
 most desired.
 
 
-\begin{figure}[h]
+\begin{figure}[ht]
     \includegraphics[width=\linewidth]{sample:info}
     \caption{Example of a figure caption. \label{fig:sample:info}}
 \end{figure}
 
 With the motivation of contrasting the previously obtained results numerically;
-a histogram of every sample is made, higlighting the distribution of the selected
-data over the different sets and the representation of the desired labels in each
-of them as seen in Figure \ref{fig:sample:hist}. 
+a histogram of every sample is made, higlighting the distribution of the
+selected data over the different sets and the representation of the desired
+labels in each of them as seen in Figure~\ref{fig:sample:hist:index}.
 
-\todo{explain histograms}
+\begin{figure*}[ht]
+    \includegraphics[width=\linewidth]{sample:hist:index}
+    \caption{Example of a figure caption. \label{fig:sample:hist:index}}
+\end{figure*}
 
-When filling each of our sets as described in Algorithm \ref{alg:sample}, 
-for the $N$ realizations generated from the desired distribution, they are document
-without replacement. This is to comply with the definition of the $3$ sets As
-mutually exclusive. The process of sampling without replacement involves
-that the index realized is removed from the support of the distribution and the
-remaining probabilities are normalized once more to generate the next realization.
+In this figure it can be seen that the uniform sampling, as expected, results in
+an equal representation of all indices over the $3$ of the desired sets. Also,
+it is possible to note that for both the triangular and normal sampling there is
+an over-representation of the central objects in the training set, while having
+an under-representation of these for the training and validation sets, which may
+lead to an scenario where what the model is trained for has little to no
+relation with what it is tested against.
 
+However, regardless of the sampling PDF selected, the distribution of the labels
+over all $3$ sets remains consistent, which may be proof supporting that the
+dataset was previously scrambled or that the process of collecting the data is
+uniform in nature. This being said, the selected sampling is going to be
+selected as the with the uniform PDF.
 
-\begin{figure}[h]
+In order to better have an idea of the data distribution, in
+Figure~\ref{fig:sample:hist:variables} it is shown how each of the variables
+previously mentioned in \ref{fig:variables} are represented in the partitions.
+Although we can see that all variables are properly sampled in the partitioned
+sets, it is interesting to point out that variables $X_3, X4,$ and $X_7$ seem to
+be extremely bunched up into a single value, with a few outliers far from this
+point. 
+
+\begin{figure*}[ht]
+    \includegraphics[width=\linewidth]{sample:hist:attributes}
+    \caption{Example of a figure caption. \label{fig:sample:hist:variables}}
+\end{figure*}
+
+\subsection{Preprocessing\label{sec:preprocess}}
+
+Before any sampling is done, and not to incur in any special treatment with
+missing data, from the initial labelled dataset with $12528$ entries, $3255$ of
+them where dropped for having empty entries for any variable. 
+
+This being said, after sampling and for the purpose of better training all
+models, every variable is normalized linearly into a value in the range
+$[0,1]$; and for the output, 2 artificial and opposite boolean variables were
+created, $Y_0$ and $Y_1$, where $Y_0$ is $1$ when the candidate is a pulsar, and
+$Y_1$ is $1$ when it is not. This makes all the sample space and every possible
+observation on it a point in a hypercube of volume 1.
+
+The problem previously described for variables $X_3, X4,$ and $X_7$ in
+Section~\ref{sec:sample} is not going to be tackled in the current work,
+although it could be approaced by using a logarithmic normalization instead of a
+linear one so as to spread the central spike and group the outliers on the
+extrema of the variable range (that being $0$ or $1$).
+
+To end the proccess of exploring the sample space, a visualization of it is made
+by projecting variables $X_3$ to $X_7$ of all points into the $3d$ cube of the
+already normalized variables $X_0$, $X_1$, and $X_2$; and with colours identify
+the value of the output $Y$. In this we can see that the data has a structure
+resembling that of a piece of cloth grabbed by one extreme. Also that there
+appears to be $2$ distinct groups of the points that are high on $X_2$ and those
+that lie on the \textit{ground}.
+
+\begin{figure}[ht]
     \includegraphics[width=\linewidth]{sample:dist:train}
-    \caption{Slice of the training data distribution. \label{fig:sample:dist:train}}
+    \caption{Projection of the training data distribution.
+    \label{fig:sample:dist:train}}
 \end{figure}
 
-\begin{figure*}[h]
-    \includegraphics[width=\linewidth]{sample:hist}
-    \caption{Example of a figure caption. \label{fig:sample:hist}}
-\end{figure*}
+
+
 
 
 \printbibliography
