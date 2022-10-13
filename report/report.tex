@@ -122,20 +122,27 @@ In the order that they appear on the database, the variables are:
 
 \todo{}
 
-\begin{figure}[h]
-    \includegraphics[width=\linewidth]{sample:dist:train}
-    \caption{Slice of the training data distribution. \label{fig:sample:dist:train}}
-\end{figure}
+\section{Sampling\label{sec:sample}}
 
-\begin{figure*}[h]
-    \includegraphics[width=\linewidth]{sample:hist}
-    \caption{Example of a figure caption. \label{fig:sample:hist}}
-\end{figure*}
+With any proposed model the goal is to best approximate certain dynamic,
+having no more at one's disposal that any observations of such event. The recolection
+of many of these measures is called a sample. 
+Before applying any technique that to tackle the problem at hand, one may
+first decide how to construct an appropiate sample that best represents the
+desired phenomenom.
 
-\begin{figure}[h]
-    \includegraphics[width=\linewidth]{sample:info}
-    \caption{Example of a figure caption. \label{fig:sample:info}}
-\end{figure}
+For the current problem we desire to have a representation
+of equal proportionality of the labels over the dataset and any sample of it.
+Furthermore the data is to be split on $3$ mutually exclusive sets, one for
+training the models with a $60\%$ of the original data; and a test and validation
+sets with $20\%$ each. These last $2$ sets will serve to observe the generability
+capacities of the models proposed.
+
+The algorithm used to construct these samples is Algorithm~\ref{alg:sample}.
+In this it can be seen that the construction of the sample sets is done
+sequencially, meaning that each set will not have available any of the previously
+selected data and any bias introduced by the sampling method may propagate and
+increase further.
 
 \begin{algorithm}
     $P = \{0.6,\ 0.2,\ 0.2\}$\\
@@ -147,7 +154,67 @@ In the order that they appear on the database, the variables are:
         $P' \gets P' \cup \{s\}$\\
         $I \gets I - s$\\
     }
-    \caption{Sampling algorithm}\label{sampling:alg}
+    \caption{Sampling algorithm}\label{alg:sample}
 \end{algorithm}
+
+The sampling for the current paper was made indexing all of the data with
+sequencial natural numbers starting from $0$ and sampling those instead.
+To avoid the possible case of introducing bias on the samples, $3$ sampling
+distributions where chosen to compare their results, these being a uniform
+triangular, and normal distributions. As the number of observations is finite,
+each index $x$ is given a probability of $f(x)$ (with $f$ being the PDF) 
+scaled so that the sum of the PDF over all indices equals $1$. This accomodation
+is made in order to use indistinctively discrete or continuous distributions.
+
+For a sample size $N$, the before mentioned sampling for each distribution is
+made as follows:
+\begin{itemize}
+    \item Uniform: spans from $0$ to $N$
+    \item Triangular: mode of $N/2$, spans from $-1$ to $N+1$ so that indices
+        on the extremes get a non zero probability
+    \item Normal: mean of $N/2$, standard deviation of $N/6$
+\end{itemize}
+
+Each distribution has a corresponding self-information function that measures
+the "surprisal" of any outcome. The expected information of a given probability
+distribution is called entropy \cite{information:borda}. Under these definitions
+one could argue that a distribution with a higher entropy corresponds to a
+better sampling technique, one more informative. Figure \ref{fig:sample:info}
+presents then the respective PDF's over the indices, with their corresponding
+self-information and entropy, from which we can infer that uniform sampling is
+most desired.
+
+
+\begin{figure}[h]
+    \includegraphics[width=\linewidth]{sample:info}
+    \caption{Example of a figure caption. \label{fig:sample:info}}
+\end{figure}
+
+With the motivation of contrasting the previously obtained results numerically;
+a histogram of every sample is made, higlighting the distribution of the selected
+data over the different sets and the representation of the desired labels in each
+of them as seen in Figure \ref{fig:sample:hist}. 
+
+\todo{explain histograms}
+
+When filling each of our sets as described in Algorithm \ref{alg:sample}, 
+for the $N$ realizations generated from the desired distribution, they are document
+without replacement. This is to comply with the definition of the $3$ sets As
+mutually exclusive. The process of sampling without replacement involves
+that the index realized is removed from the support of the distribution and the
+remaining probabilities are normalized once more to generate the next realization.
+
+
+\begin{figure}[h]
+    \includegraphics[width=\linewidth]{sample:dist:train}
+    \caption{Slice of the training data distribution. \label{fig:sample:dist:train}}
+\end{figure}
+
+\begin{figure*}[h]
+    \includegraphics[width=\linewidth]{sample:hist}
+    \caption{Example of a figure caption. \label{fig:sample:hist}}
+\end{figure*}
+
+
 \printbibliography
 \end{document}
