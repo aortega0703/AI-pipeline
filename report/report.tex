@@ -10,6 +10,7 @@
 \graphicspath{ {../images/} }
 \usepackage{textcomp}
 \usepackage{xcolor}
+\usepackage{hyperref}
 \usepackage{todonotes}
 
 \begin{document}
@@ -91,17 +92,35 @@ unlabelled set with $5370$ observations and a labelled set with $12528$ observat
 the latter being the one used on this paper for purposes of training, testing,
 and validation of the techniques used.
 
-This dataset contains 8 continuous variables per data point with its corresponding
-binary labeling as a pulsar or not. 
+As pulsars appear very dimmly in the sky, it is necessary to collect a few hundred
+to thousand of pulses together in order to discern them from the background noise,
+this collection is \textit{folded} into an integrated pulse profile
+\cite{pulsar:importance:kramer}. The dataset previously mentioned
+has 8 continuous variables per pulsar candidate, each with its corresponding
+binary labeling. The first $4$ of them are statistics that describe the
+integrated pulse profile of the star, while the last $4$ are similarly
+statistics from the DM-SNR (Dispersion Measure - Signal to Noise Ratio)
+\cite{pulsar:dataset:explanation:lyon}. The task being then to decide based
+on these 8 variables if any given object is a possible pulsar or not.
+
+In the order that they appear on the database, the variables are:
+
+\begin{itemize}
+    \item Mean of the integrated profile.
+    \item Standard deviation of the integrated profile.
+    \item Excess kurtosis of the integrated profile.
+    \item Skewness of the integrated profile.
+    \item Mean of the DM-SNR curve.
+    \item Standard deviation of the DM-SNR curve.
+    \item Excess kurtosis of the DM-SNR curve.
+    \item Skewness of the DM-SNR curve.
+    \item Class 
+\end{itemize}
+
 
 \section{State of the art\label{sec:state_of_art}}
 
 \todo{}
-
-\section{Sampling\label{sec:sampling}}
-
-In order to decide the best criterion for sampling
-
 
 \begin{figure}[h]
     \includegraphics[width=\linewidth]{sample:dist:train}
