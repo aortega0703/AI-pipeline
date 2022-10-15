@@ -17,9 +17,9 @@ def linear_eval(X, B):
     return (X @ B).T
 
 
-def logistic(X, P):
+def logistic(X, Y):
     P = (P.T * 0.98) + 0.01
-    Y = np.log(P/(1-P))
+    #Y = np.log(P/(1-P))
     B, E = linear(X, Y.T)
     X = np.concatenate([np.ones((X.shape[1], 1)), X.T], axis=1)
     Y = X @ B
