@@ -56,4 +56,7 @@ def cluster(ax, X, U, Ud=None, C=None, fuzzy=False,
     axis_labels(ax, *axes_names[:3])
     if compare:
         ax.scatter([], [], [], color='k', marker="x", label=f"Errors: {F_N}/{U.shape[1]} ({F_N/U.shape[1]:.2%})")
-    ax.legend(loc="upper right")
+    legend = ax.legend(loc="upper right")
+    for l in legend.legendHandles:
+        l._sizes = [30]
+        l._alpha = 1
