@@ -11,24 +11,27 @@ def PAC_delta(H_norm, epsilon, eta):
 
 # TN FP
 # FN TP
-def confusion(U1, U2, supervise = True):
-    U1 = np.argmax(U1, axis = 0)
+def confusion(U1, U2, supervise = True, compact=True):
+    p = U1.shape[1]
     if supervise:
-        Ud = np.argmax(Ud, axis = 0)
-        CM = np.zeros((U1.shape[0], U1.shape[0]))
-        for u in range(len(U1)):
-            CM[Ud[u], U1[u]] += 1
-        return CM
+        U1 = np.argmax(U1, axis = 0)
+        U2 = np.argmax(U2, axis = 0)
+        CM = np.zeros((np.max(U1)+1, np.max(U1)+1))
+        for u in range(p):
+            CM[U2[u], U1[u]] += 1
+        return CM/p
     else:
         # Compares if pairs of points share cluster under U1 and U2 or not
-        U2 = np.argmax(U2, axis=0)
-        CM = np.zeros((2,2))
-        for u in range(len(U1)):
-            for v in range(u):
-                p1 = U1[u] == U1[v]
-                p2 = U2[u] == U2[v]
-                CM += [[not p1 and not p2, p1 and not p2], [not p1 and p2, p1 and p2]]
-        return CM
+        U1 = np.argmax(U1, axis = 0, keepdims=True) != 0
+        U2 = np.argmax(U2, axis=0, keepdims=True) != 0
+        equal_pw = lambda A: ~(A.T @ ~A) * ~(~A.T @ A)
+        D1 = equal_pw(U1)
+        D2 = equal_pw(U2)
+        CM_T = np.array([
+            [np.sum(~D1 * ~D2), np.sum(D1 * ~D2)],
+            [np.sum(~D1 * D2), np.sum(D1 * D2) - U1.shape[1]]])
+        return CM_T / 2
+
 
 
 index = {
