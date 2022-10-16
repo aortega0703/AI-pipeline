@@ -35,8 +35,11 @@ def backpropagate(W, V, dE, phi):
 
     delta[k] = phi[-1][1](V[k])
     
-    temp = (delta[k] @ dE.T[:,:,None])
-    delta[k] = np.squeeze(temp).T
+    if len(delta[k].shape) != 2:
+        temp = (delta[k] @ dE.T[:,:,None])
+        delta[k] = np.squeeze(temp).T
+    else:
+        delta[k] = delta[k] * dE
 
     for l in reversed(range(1, k)):
         delta[l] = (W[l+1].T @ delta[l+1]) * phi[l][1](V[l])
