@@ -14,6 +14,7 @@
 \usepackage{hyperref}
 \setlength {\marginparwidth }{2cm}
 \usepackage{todonotes}
+\usepackage{csvsimple}
 
 \begin{document}
 
@@ -29,7 +30,13 @@
 \listoftodos
 
 \begin{abstract}
-    \todo[inline]{Abstract}
+    Pulsars are a type of neutron star that need measurement over a prolonged
+    time to assess their presence. In the current paper various Artificial
+    Intelligence algorithms are used in order to predict pulsar star candidates.
+    Multiple supervised and unsupervised algorithms are approached in this,
+    comparing their efficiency. Alonside the predictors developed, the data and
+    results are explored in depth and multiple indices are used to quantify the
+    success of these.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -61,7 +68,7 @@ multiple techniques have been developed~\cite{pulsar:dataset:explanation:lyon}.
 In the current paper, data from a specialized pulsar
 catalogue~\cite{pulsar:dataset:lyon}, is approached using multiple Artificial
 Intelligence techniques in order to identify possible pulsar star candidates.
-\todo[inline]{Sections list and definition}
+\todo[inline]{Sections list}
 
 \section{The Problem\label{sec:problem}} The name Pulsar (from
 \underline{Puls}ating st\underline{ar}) refers to rapidly rotating and strongly
@@ -264,22 +271,32 @@ linear one so as to spread the central spike and group the outliers on the
 extrema of the variable range (that being $0$ or $1$).
 
 To end the proccess of exploring the sample space, a visualization of it is made
-by projecting variables $X_3$ to $X_7$ of all points into the $3d$ cube of the
-already normalized variables $X_0$, $X_1$, and $X_2$; and with colours identify
-the value of the output $Y$. In this we can see that the data has a structure
-resembling that of a piece of cloth grabbed by one extreme. Also that there
-appears to be $2$ distinct groups of the points that are high on $X_2$ and those
-that lie on the \textit{ground}.
+in Figure \ref{fig:dist} by projecting variables $X_1$, $X_2$ and $X_6$ of all
+points into the unitary $3d$ cube of the already normalized variables $X_0$,
+$X_1$, and $X_2$; the value of the output $Y$ is indicated by colour. The choice
+for the plotting axes is made by choosing the most spread out variables.
+
+In this figure it can see that the data has two distinct cloud of points that
+correspond with their classification. For the points labelled false, they clump
+up into an sphere, and get scarser the further they are from the center of it.
+The second cloud of points, corresponding to the identified pulsars, has a flat
+shape which lies down and to the side of the former. The points seem to very
+slightly group away from the non pulsars.
 
 \begin{figure}[ht]
-    \includegraphics[width=\linewidth]{sample:dist:train}
+    \includegraphics[width=\linewidth]{dist}
     \caption{Projection of the training data distribution.
-    \label{fig:sample:dist:train}}
+    \label{fig:dist}}
 \end{figure}
 
+\section{Supervised learning\label{sec:supervised}}
+\subsection{Linear and logistic regression\label{sec:regression}}
+
+\todo{regression description}
 
 
-
+\subsection{Multilayer perceptron\label{sec:nn}}
+\todo{nn describe}
 
 \printbibliography
 \end{document}

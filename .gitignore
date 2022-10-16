@@ -4,6 +4,7 @@
 data/
 report/*
 images/
+tables/
 
 !*.tex
 !*.bib
