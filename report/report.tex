@@ -45,13 +45,12 @@
 
 \section{Introduction\label{sec:intro}} 
 \todo{check all figure captions}
-It is know that since ancient times
-humankind humankind has made an effort to catalogue the stars visible in the
-sky, from the $36$ stars listed in the \"three stars each\" by the ancient
-Babylonians in the $2000s\ B.C.$~\cite{astronomy:history:north}; to the last
-full-sky catalogue to date with over $1.5$ billion objects, the Gaia Data
-Release 3~\cite{gaia:dr3:esa}, made available to the public on June 13, 2022, by
-the European Space Agency.
+It is know that since ancient times humankind humankind has made an effort to
+catalogue the stars visible in the sky, from the $36$ stars listed in the
+\"three stars each\" by the ancient Babylonians in the $2000s\
+B.C.$~\cite{astronomy:history:north}; to the last full-sky catalogue to date
+with over $1.5$ billion objects, the Gaia Data Release 3~\cite{gaia:dr3:esa},
+made available to the public on June 13, 2022, by the European Space Agency.
 
 With the advent of modern telescopes and satellites, the capability to detect
 even the dimmest lights from space have reached heights previously unthinkable.
@@ -247,34 +246,19 @@ be extremely bunched up into a single value, with a few outliers far from this
 point. 
 
 \begin{figure*}[ht]
-    \includegraphics[width=\linewidth]{sample:hist:attributes}
+    \includegraphics[width=\linewidth]{sample:hist:variables}
     \caption{Example of a figure caption. \label{fig:sample:hist:variables}}
 \end{figure*}
 
-\subsection{Preprocessing\label{sec:preprocess}}
+To further exploring the sample space, Figure \ref{fig:dist} has a projection of
+variables $X_1$, $X_2$ and $X_6$, being these the ones with higher dispersion,
+onto the unitary $3d$ cube of the already normalized variables. The output class
+$Y$ is indicated by colour. 
 
-Before any sampling is done, and not to incur in any special treatment with
-missing data, from the initial labelled dataset with $12528$ entries, $3255$ of
-them where dropped for having empty entries for any variable. 
-
-This being said, after sampling and for the purpose of better training all
-models, every variable is normalized linearly into a value in the range
-$[0,1]$; and for the output, 2 artificial and opposite boolean variables were
-created, $Y_0$ and $Y_1$, where $Y_0$ is $1$ when the candidate is a pulsar, and
-$Y_1$ is $1$ when it is not. This makes all the sample space and every possible
-observation on it a point in a hypercube of volume 1.
-
-The problem previously described for variables $X_3, X4,$ and $X_7$ in
-Section~\ref{sec:sample} is not going to be tackled in the current work,
-although it could be approaced by using a logarithmic normalization instead of a
-linear one so as to spread the central spike and group the outliers on the
-extrema of the variable range (that being $0$ or $1$).
-
-To end the proccess of exploring the sample space, a visualization of it is made
-in Figure \ref{fig:dist} by projecting variables $X_1$, $X_2$ and $X_6$ of all
-points into the unitary $3d$ cube of the already normalized variables $X_0$,
-$X_1$, and $X_2$; the value of the output $Y$ is indicated by colour. The choice
-for the plotting axes is made by choosing the most spread out variables.
+\begin{figure}[ht]
+    \includegraphics[width=\linewidth]{dist}
+    \caption{Projection of the training data distribution. \label{fig:dist}}
+\end{figure}
 
 In this figure it can see that the data has two distinct cloud of points that
 correspond with their classification. For the points labelled false, they clump
@@ -283,17 +267,93 @@ The second cloud of points, corresponding to the identified pulsars, has a flat
 shape which lies down and to the side of the former. The points seem to very
 slightly group away from the non pulsars.
 
-\begin{figure}[ht]
-    \includegraphics[width=\linewidth]{dist}
-    \caption{Projection of the training data distribution.
-    \label{fig:dist}}
-\end{figure}
+\subsection{Preprocessing\label{sec:preprocess}}
 
-\section{Supervised learning\label{sec:supervised}}
+Before any sampling is done, and not to incur in any special treatment with
+missing data, from the initial labelled dataset with $12528$ entries, $3255$ of
+them where dropped for having empty entries for any variable. 
+
+This being said, after sampling and for the purpose of better training all
+models, every variable is normalized linearly into a value in the range $[0,1]$;
+and for the output, 2 artificial and opposite boolean variables were created,
+$Y_0$ and $Y_1$, where $Y_0$ is $1$ when the candidate is a pulsar, and $Y_1$ is
+$1$ when it is not. This makes all the sample space and every possible
+observation on it a point in a hypercube of volume 1.
+
+The problem previously described for variables $X_3, X4,$ and $X_7$ in
+Section~\ref{sec:sample} is not going to be tackled in the current work,
+although it could be approaced by using a logarithmic normalization instead of a
+linear one so as to spread the central spike and group the outliers on the
+extrema of the variable range (that being $0$ or $1$).
+
+\section{Supervised learning\label{sec:supervised}} 
+
+Supervised learning is called when both inputs and outputs for a given problem
+are used in order to mimic the underlying behaviour and simulate its dynamic
+\cite{supervised:definition:rusell}. The ouput for our problem is present and is
+revised by actual human annotators, so a supervised approach may be a good start
+to analyse the data. In the following sections multiple supervised techniques
+are described and compared agains multiple indices.
+
 \subsection{Linear and logistic regression\label{sec:regression}}
 
-\todo{regression description}
+Linear regression is probably the simplest way of tuning parameters to follow
+given data. It assumes a matrix $X$ of $n$ measured variables over $p$
+observations, a matrix $Y$ with $m$ output variables over the same opulation,
+and a matrix $\beta$ relating them. It assumes, as its name implies, that the
+dynamic of the model can be expressed as a linear equation of the form: 
+%
+\begin{equation}\label{eq:linear}
+    \overset{(m\times p)}{Y}
+    = \overset{(m\times n)}{\beta} \overset{(n\times p)}{X}
+\end{equation}
+%
+Where it is desired to find the best parameter $\beta$. This can be done making
+use of the pseudo inverse of $X$ as follows:
+%
+\begin{align*}
+    \overset{(m\times p)}{Y}
+        &= \overset{(m\times n)}{\beta} \overset{(n\times p)}{X}\\
+    \overset{(m\times p)}{Y}\overset{(p\times n)}{X^T}
+        &= \overset{(m\times p)}{\beta X} \overset{(p\times n)}{X^T}\nonumber\\
+    \overset{(m\times n)}{Y X^T} \overset{(n\times n)}{\left(X X^T\right)^{-1}}
+        &= \overset{(m\times n)}{\beta}
+\end{align*}
+%
+It's important to note that usually a row of $1$s is added to $X$ in order to
+account for a constant term in the model. A similar model is logistic
+regression, which deals with data in the range $(0, 1)$ that have a great
+distinction between then, making it especially useful for problems of
+classification. It assumes a model of the form:
+%
+\begin{equation}
+    Y = \frac{1}{1+\exp{(-\beta X)}}
+\end{equation}
+%
+Where addition, division, and exponentiation are defined elementwise; which
+imposes multiple and simultaneous sigmoid functions of $1$ output. 
+This model can be solved as a linear regression with the substitution:
+%
+\begin{align*}
+    Y &= \frac{1}{1+e^{(-\beta X)}}\nonumber\\
+        &= \frac{e^{(\beta X)}}{1+e^{(\beta X)}}\\
+    Y+Ye^{(\beta X)}
+        &= e^{(\beta X)}\\
+    Y &= (1-Y) e^{(\beta X)}\\
+    \frac{Y}{1-Y} &= e^{(\beta X)}\\
+    \ln{\left(\frac{Y}{1-Y}\right)} &= \beta X\\
+        &= P
+\end{align*}
+%
+Using the known output $Y$ to find $P$ and solving for $\beta$ in the new linear
+model.
 
+\begin{figure}[ht]
+    \includegraphics[width=\linewidth]{regression:train}
+\end{figure}
+
+
+\todo{describe regression output}
 
 \subsection{Multilayer perceptron\label{sec:nn}}
 \todo{nn describe}
