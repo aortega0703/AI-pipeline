@@ -7,9 +7,8 @@ sigmoid = (
     lambda x: sigmoid[0](x) * (1 - sigmoid[0](x)))
 softmax = (
     lambda x: np.exp(x) / np.sum(np.exp(x), axis=0),
-    lambda X: np.array([
-        softmax[0](X[:, [x]]) * (np.eye(X.shape[0]) - softmax[0](X[:, [x]]).T)
-        for x in range(X.shape[1])]))
+    lambda X: softmax[0](X).T[:,:,None] *
+        (np.eye(X.shape[0]) - softmax[0](X).T[:,None,:]))
 
 
 def feedforward(X, W, B, phi, Yd):
