@@ -35,7 +35,7 @@ def cluster(ax, X, U, Ud=None, C=None, fuzzy=False,
         xF = x & (Ud_i != c)
         xT_N = np.sum(xT)
         xF_N = np.sum(xF)
-        x_N = xT_N + xF_N
+        x_N = np.sum((Ud_i == c))
         
         # Cluster label
         c_name = cluster_names[c] + f": {xT_N}"
@@ -60,3 +60,13 @@ def cluster(ax, X, U, Ud=None, C=None, fuzzy=False,
     for l in legend.legendHandles:
         l._sizes = [30]
         l._alpha = 1
+
+def CM_string(CM):
+    CM[0,:] = CM[0,:]/np.sum(CM[0,:])
+    CM[1,:] = CM[1,:]/np.sum(CM[1,:])
+    CM_s = np.empty((3,3), dtype=object)
+    CM_s[1:, 1:] = np.array([f"{x:.2%}" 
+        for x in CM.reshape(CM.size)]).reshape(CM.shape)
+    CM_s[0,:] = "", "F", "T"
+    CM_s[:,0] = "Predicted\Actual", "F", "T"
+    return CM_s
