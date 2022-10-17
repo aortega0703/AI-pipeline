@@ -9,11 +9,13 @@
 \usepackage{algorithm2e}
 \usepackage{graphicx}
 \graphicspath{ {../images/} }
+\usepackage{subcaption}
 \usepackage{textcomp}
 \usepackage{xcolor}
 \usepackage{hyperref}
 \setlength {\marginparwidth }{2cm}
 \usepackage{todonotes}
+\usepackage{booktabs}
 \usepackage{csvsimple}
 
 \begin{document}
@@ -44,7 +46,7 @@
 \end{IEEEkeywords}
 
 \section{Introduction\label{sec:intro}} 
-\todo{check all figure captions}
+\todo[inline]{check all figure captions}
 It is know that since ancient times humankind humankind has made an effort to
 catalogue the stars visible in the sky, from the $36$ stars listed in the
 \"three stars each\" by the ancient Babylonians in the $2000s\
@@ -67,19 +69,28 @@ multiple techniques have been developed~\cite{pulsar:dataset:explanation:lyon}.
 In the current paper, data from a specialized pulsar
 catalogue~\cite{pulsar:dataset:lyon}, is approached using multiple Artificial
 Intelligence techniques in order to identify possible pulsar star candidates.
-\todo[inline]{Sections list}
 
-\section{The Problem\label{sec:problem}} The name Pulsar (from
-\underline{Puls}ating st\underline{ar}) refers to rapidly rotating and strongly
-magnetized neutron stars~\cite{pulsar:definition:nasa}. The magnetic field
-present in these stars, accelerates particles to high speeds around the star,
-which may ultimately get thrown into the magnetic poles poles of the pulsar,
-heating them. This heat gradient gets to be so high that the poles may act as
-hotspots, radiating massive amounts of heat into space, distinctively more than
-that of the rest of the star. As the star spins, these beams of electromagnetic
-waves (mostly on the X-ray spectrum) go in and out of view from earth at
-extremely regular periods, motion that makes it appear as pulsating in the sky,
-thus, giving it its name.
+In Section \ref{sec:problem} the astronomical phenomenom is described more in
+ depth along with the problem to tackle in this. Section \ref{sec:state_of_art}
+ Is a short compendium of how different authors have approached the problem
+ before. Section \ref{sec:premodel} deals with the steps previous to trying any
+ solutions, mostly data exploration and the sampling process. Section
+ \ref{sec:supervised} deals with the aprroaches that use the labeling offered
+ by the dataset while \ref{sec:unsupervised} tries a blindfolded approach to
+ possibly question any wrongly assignated labeling in the dataset.
+
+\section{The Problem\label{sec:problem}}
+
+The name Pulsar (from\underline{Puls}ating st\underline{ar}) refers to rapidly
+rotating and strongly magnetized neutron stars~\cite{pulsar:definition:nasa}.
+The magnetic field present in these stars, accelerates particles to high speeds
+around the star, which may ultimately get thrown into the magnetic poles poles
+of the pulsar, heating them. This heat gradient gets to be so high that the
+poles may act as hotspots, radiating massive amounts of heat into space,
+distinctively more than that of the rest of the star. As the star spins, these
+beams of electromagnetic waves (mostly on the X-ray spectrum) go in and out of
+view from earth at extremely regular periods, motion that makes it appear as
+pulsating in the sky, thus, giving it its name.
 
 Pulsars get to occupy an special place in solving a wide range of physical and
 astronomical problems~\cite{pulsar:importance:kramer}. The extreme conditions on
@@ -134,12 +145,11 @@ In the order that they appear on the database, the variables are:
     \caption{Attributes describing a pulsar candidate\label{fig:variables}}
 \end{figure}
 
-
 \section{State of the art\label{sec:state_of_art}}
 
 \todo[inline]{State of the art}
 
-\section{Sampling and preproccessing}
+\section{Sampling and preproccessing\label{sec:premodel}}
 \subsection{Sampling\label{sec:sample}}
 
 With any proposed model the goal is to best approximate certain dynamic, having
@@ -345,18 +355,53 @@ This model can be solved as a linear regression with the substitution:
         &= P
 \end{align*}
 %
-Using the known output $Y$ to find $P$ and solving for $\beta$ in the new linear
-model.
+Using the known output $Y$ to find $P$, solving for $\beta$ in the new linear
+model, and substituting everything back into the original expression.
+
+The parameter matrix $\beta$ for the previous models was obtained using the
+trainin data and its results may be seen in Figure \ref{fig:regression:train}
+along with Figures \ref{fig:regression:test} and \ref{fig:regression:validation}
+that hold the output obtained for the model against previously unseen data.
 
 \begin{figure}[ht]
-    \includegraphics[width=\linewidth]{regression:train}
+    \begin{subfigure}[b]{\linewidth}
+        \includegraphics[width=\linewidth]{regression:train}
+        \caption{Linear and logistic regression for training data
+        \label{fig:regression:train}}
+    \end{subfigure}
+    %
+    \begin{subfigure}[b]{\linewidth}
+        \includegraphics[width=\linewidth]{regression:test}
+        \caption{Linear and logistic regression for test data
+        \label{fig:regression:test}}
+    \end{subfigure}
+    %
+    \begin{subfigure}[b]{\linewidth}
+        \includegraphics[width=\linewidth]{regression:validation}
+        \caption{Linear and logistic regression for validation data
+        \label{fig:regression:validation}}
+    \end{subfigure}
+    \caption{Classification for linear and logistic regression
+        \label{fig:regression}}
 \end{figure}
 
+In Figure \ref{sec:regression} it can be seen that, as expected the best results
+where obtained in the training data with a classification error of $2.59\%$,
+while the worst results lie in the testing group with $3.99\%$. In this group it
+can also be observed that the class worst classified were the non-pulsar, with
+a classification error of $4.13\%$.
 
-\todo{describe regression output}
+\begin{table}
+    \csvautobooktabular{../tables/regression:CM:test.csv}
+    \caption{foo}
+\end{table}
+
+\todo{describe regression CM}
 
 \subsection{Multilayer perceptron\label{sec:nn}}
 \todo{nn describe}
 
+\section{Unsupervised leaning\label{sec:unsupervised}}
 \printbibliography
 \end{document}
+    
