@@ -396,27 +396,86 @@ In Table \ref{tab:regression:CM} it can be seen that, as expected the best
 results where obtained in the training (\ref{tab:regression:CM:train}) data with
 a classification error of $2.59\%$ and a pulsar detection of the $72.65\%$;
 while the worst results lie in the testing group with $3.99\%$ with a very poor
-pulsar detectection, with a pulsar detection error of $35.15\%$. The poor
-results in the correct detection of pulsars may be the result of an
+pulsar detectection, with a pulsar detection error of $35.15\%$.
+
+\begin{table}    
+    \begin{subtable}{0.49\linewidth}
+        \csvreader[
+            centered tabular=l|ll,
+            no head,column count=3,
+            table head=  & F & T \\\hline
+        ]{../tables/regression:CM:train.csv}{}%
+        {\ifcsvstrequal{\thecsvrow}{1}{F}{T} & \percentage{\csvcoli} & \percentage{\csvcolii}}%
+        \caption{Confusion matrix for regression on train data\label{tab:regression:CM:train}}
+    \end{subtable}
+    \hfill%
+    \begin{subtable}{0.49\linewidth}
+        \csvreader[
+            centered tabular=l|ll,
+            no head,column count=3,
+            table head=  & F & T \\\hline,
+        ]{../tables/regression:CM:test.csv}{}%
+        {\ifcsvstrequal{\thecsvrow}{1}{F}{T} & \percentage{\csvcoli} & \percentage{\csvcolii}}%
+        \caption{Confusion matrix for regression on test data\label{tab:regression:CM:test}}
+    \end{subtable}
+
+    \begin{subtable}{\linewidth}
+        \csvreader[
+            centered tabular=l|ll,
+            no head,column count=3,
+            table head= & F & T \\\hline,
+            late after line=\\\hline
+        ]{../tables/regression:CM:validation.csv}{}%
+        {\ifcsvstrequal{\thecsvrow}{1}{F}{T} & \percentage{\csvcoli} & \percentage{\csvcolii}}%
+        \caption{Confusion matrix for regression on validation data\label{tab:regression:CM:validation}}
+    \end{subtable}
+    \caption{Confusion matrix for regression models\label{tab:regression:CM}}
+\end{table}
+
+Furthermore, looking at Table \ref{tab:regression:index} it is possible to
+dissern that our models have a good performance except on the sensitivity and
+phi indices. Sensitibity quantifies the true possitive predictions, while phi
+measures the quality of a binary classification. 
+
+The poor results in the correct detection of pulsars may be the result of an
 overrepresentation and therefore a bias towards non pulsar objects in the
 training data, with $1652$ datapoints ($89.1\%$) againts the 202 ($10.8\%$)
 pulsars.
 
-\csvreader[
-    centered tabular=lll,
-    no head,column count=3,
-    table head=\hline & F & T \\\hline,
-    late after line=\\\hline]%]
-{../tables/regression:CM:test.csv}{}%
-{\ifcsvstrequal{\thecsvrow}{1}{F}{T} & \percentage{\csvcoli} & \percentage{\csvcolii}}%
+\begin{table}
+    \hfill
+    \begin{subtable}{0.45\linewidth}
+        \csvreader[
+            centered tabular=l|l,
+            no head,column count=2,
+            table head= Index & Value \\\hline
+        ]{../tables/regression:index:train.csv}{}%
+        {\csvcoli & \csvcolii}%
+        \caption{Multiple indices on training data\label{tab:regression:index:train}}
+    \end{subtable}
+    \hfill%
+    \begin{subtable}{0.45\linewidth}
+        \csvreader[
+            centered tabular=l|l,
+            no head,column count=2,
+            table head= Index & Value \\\hline
+        ]{../tables/regression:index:test.csv}{}%
+        {\csvcoli & \csvcolii}%
+        \caption{Multiple indices on test data\label{tab:regression:index:test}}
+    \end{subtable}
+    \hfill
 
-\csvreader[
-    centered tabular=ll,
-    no head,column count=2,
-    table head=\hline Index & Value \\\hline,
-    late after line=\\\hline]%]
-{../tables/regression:index:test.csv}{}%
-{\csvcoli & \csvcolii}%
+    \begin{subtable}{\linewidth}
+        \csvreader[
+            centered tabular=l|l,
+            no head,column count=2,
+            table head= Index & Value \\\hline
+        ]{../tables/regression:index:validation.csv}{}%
+        {\csvcoli & \csvcolii}%
+        \caption{Multiple indices on validation data\label{tab:regression:index:validation}}
+    \end{subtable}
+    \caption{Multiple indices on regression models\label{tab:regression:index}}
+\end{table}
 
 \subsection{Multilayer perceptron\label{sec:nn}}
 \todo[inline]{nn describe}
