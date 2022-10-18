@@ -17,6 +17,13 @@
 \usepackage{todonotes}
 \usepackage{booktabs}
 \usepackage{csvsimple}
+\usepackage{siunitx}
+
+\newcommand\percentage[2][round-precision = 2]{% default precision: 2
+    \SI[round-mode = places,
+        scientific-notation = fixed, fixed-exponent = 0,
+        output-decimal-marker={.}, #1]{#2e2}{\percent}%
+}
 \begin{document}
 
 \title{Automated Labeling of Pulsar Star Candidates}
@@ -357,10 +364,11 @@ This model can be solved as a linear regression with the substitution:
 Using the known output $Y$ to find $P$, solving for $\beta$ in the new linear
 model, and substituting everything back into the original expression.
 
-The parameter matrix $\beta$ for the previous models was obtained using the
-trainin data and its results may be seen in Figure \ref{fig:regression:train}
-along with Figures \ref{fig:regression:test} and \ref{fig:regression:validation}
-that hold the output obtained for the model against previously unseen data.
+After finding the best parameter matrix $\beta$ for the former models, it was
+tested against previously unseen data which results are observed in Figure
+\ref{fig:regression}. In this image we can observe how both models assignated
+the same class for all points but the logistic model has a much sharper
+separation between groups. 
 
 \begin{figure}[ht]
     \begin{subfigure}[b]{\linewidth}
@@ -384,44 +392,34 @@ that hold the output obtained for the model against previously unseen data.
         \label{fig:regression}}
 \end{figure}
 
-In Figure \ref{sec:regression} it can be seen that, as expected the best results
-where obtained in the training data with a classification error of $2.59\%$ and
-a pulsar detection of the $72.65\%$; while the worst results lie in the testing
-group with $3.99\%$ with a very poor pulsar detectection, with an error of
-$35.15\%$.
+In Table \ref{tab:regression:CM} it can be seen that, as expected the best
+results where obtained in the training (\ref{tab:regression:CM:train}) data with
+a classification error of $2.59\%$ and a pulsar detection of the $72.65\%$;
+while the worst results lie in the testing group with $3.99\%$ with a very poor
+pulsar detectection, with a pulsar detection error of $35.15\%$. The poor
+results in the correct detection of pulsars may be the result of an
+overrepresentation and therefore a bias towards non pulsar objects in the
+training data, with $1652$ datapoints ($89.1\%$) againts the 202 ($10.8\%$)
+pulsars.
 
-\begin{table}
-    \begin{subtable}{\linewidth}
-        \centering
-        \csvautotabular[respect all]{../tables/regression:CM:train.csv}
-        \caption{Confussion matrix for Regression with test data\label{tab:regression:CM:train}}
-        \vspace{2.5ex}
-    \end{subtable}
-    \begin{subtable}{\linewidth}
-        \centering
-        \csvautotabular[respect all]{../tables/regression:CM:test.csv}
-        \caption{Confussion matrix for Regression with test data\label{tab:regression:CM:test}}
-        \vspace{2.5ex}
-    \end{subtable}
-    \begin{subtable}{\linewidth}
-        \centering
-        \csvautotabular[respect all]{../tables/regression:CM:validation.csv}
-        \caption{Confussion matrix for Regression with test data\label{tab:regression:CM:validation}}
-    \end{subtable}
-    \caption{Confussion matrix for regression}
-\end{table}
+\csvreader[
+    centered tabular=lll,
+    no head,column count=3,
+    table head=\hline & F & T \\\hline,
+    late after line=\\\hline]%]
+{../tables/regression:CM:test.csv}{}%
+{\ifcsvstrequal{\thecsvrow}{1}{F}{T} & \percentage{\csvcoli} & \percentage{\csvcolii}}%
 
-\begin{table}
-    \centering
-    \csvautotabular[respect all]{../tables/regression:indices:test.csv}
-    \caption{Multiple indices for Regression with test
-    data\label{tab:regression:index:test}}
-\end{table}
-
-\todo{describe regression CM}
+\csvreader[
+    centered tabular=ll,
+    no head,column count=2,
+    table head=\hline Index & Value \\\hline,
+    late after line=\\\hline]%]
+{../tables/regression:index:test.csv}{}%
+{\csvcoli & \csvcolii}%
 
 \subsection{Multilayer perceptron\label{sec:nn}}
-\todo{nn describe}
+\todo[inline]{nn describe}
 
 \section{Unsupervised leaning\label{sec:unsupervised}}
 \printbibliography
