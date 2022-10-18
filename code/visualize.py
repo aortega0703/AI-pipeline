@@ -68,5 +68,5 @@ def CM_string(CM):
     CM_s[1:, 1:] = np.array([f"{x:.2%}" 
         for x in CM.reshape(CM.size)]).reshape(CM.shape)
     CM_s[0,:] = "", "F", "T"
-    CM_s[:,0] = "Predicted\Actual", "F", "T"
+    CM_s[:,0] = "Actual/Predicted", "F", "T"
     return CM_s

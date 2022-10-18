@@ -17,7 +17,6 @@
 \usepackage{todonotes}
 \usepackage{booktabs}
 \usepackage{csvsimple}
-
 \begin{document}
 
 \title{Automated Labeling of Pulsar Star Candidates}
@@ -386,14 +385,37 @@ that hold the output obtained for the model against previously unseen data.
 \end{figure}
 
 In Figure \ref{sec:regression} it can be seen that, as expected the best results
-where obtained in the training data with a classification error of $2.59\%$,
-while the worst results lie in the testing group with $3.99\%$. In this group it
-can also be observed that the class worst classified were the non-pulsar, with
-a classification error of $4.13\%$.
+where obtained in the training data with a classification error of $2.59\%$ and
+a pulsar detection of the $72.65\%$; while the worst results lie in the testing
+group with $3.99\%$ with a very poor pulsar detectection, with an error of
+$35.15\%$.
 
 \begin{table}
-    \csvautobooktabular{../tables/regression:CM:test.csv}
-    \caption{foo}
+    \begin{subtable}{\linewidth}
+        \centering
+        \csvautotabular[respect all]{../tables/regression:CM:train.csv}
+        \caption{Confussion matrix for Regression with test data\label{tab:regression:CM:train}}
+        \vspace{2.5ex}
+    \end{subtable}
+    \begin{subtable}{\linewidth}
+        \centering
+        \csvautotabular[respect all]{../tables/regression:CM:test.csv}
+        \caption{Confussion matrix for Regression with test data\label{tab:regression:CM:test}}
+        \vspace{2.5ex}
+    \end{subtable}
+    \begin{subtable}{\linewidth}
+        \centering
+        \csvautotabular[respect all]{../tables/regression:CM:validation.csv}
+        \caption{Confussion matrix for Regression with test data\label{tab:regression:CM:validation}}
+    \end{subtable}
+    \caption{Confussion matrix for regression}
+\end{table}
+
+\begin{table}
+    \centering
+    \csvautotabular[respect all]{../tables/regression:indices:test.csv}
+    \caption{Multiple indices for Regression with test
+    data\label{tab:regression:index:test}}
 \end{table}
 
 \todo{describe regression CM}
