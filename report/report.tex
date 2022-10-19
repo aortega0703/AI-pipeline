@@ -85,7 +85,7 @@ In Section \ref{sec:problem} the astronomical phenomenom is described more in
  by the dataset while \ref{sec:unsupervised} tries a blindfolded approach to
  possibly question any wrongly assignated labeling in the dataset.
 
-\section{The Problem\label{sec:problem}}
+\section{The problem\label{sec:problem}}
 
 The name Pulsar (from\underline{Puls}ating st\underline{ar}) refers to rapidly
 rotating and strongly magnetized neutron stars~\cite{pulsar:definition:nasa}.
@@ -136,46 +136,99 @@ based on these 8 variables if any given object is a possible pulsar or not.
 
 In the order that they appear on the database, the variables are:
 
+\begin{table}[ht]
+    \begin{tabular}{l|l}
+        $X_0:$ & Mean of the integrated profile.\\
+        $X_1:$ & Standard deviation of the integrated profile.\\
+        $X_2:$ & Excess kurtosis of the integrated profile.\\
+        $X_3:$ & Skewness of the integrated profile.\\
+        $X_4:$ & Mean of the DM-SNR curve.\\
+        $X_5:$ & Standard deviation of the DM-SNR curve.\\
+        $X_6:$ & Excess kurtosis of the DM-SNR curve.\\
+        $X_7:$ & Skewness of the DM-SNR curve.\\
+        $Y:$   & Class 
+    \end{tabular}
+    \caption{Attributes describing a pulsar candidate\label{tab:variables}}
+\end{table}
+
+\section{Conceptual framework\label{sec:framework}}
+
+\todo[inline]{Conceptual framework}
+
+\section{Methods\label{sec:methods}}
+
+\subsection{Visualization}
+
+In order to start exploring the sample space, Figure \ref{fig:dist} has a
+projection of variables $X_1$, $X_2$ and $X_6$, these being selected for their
+greater dispersion as will be discused in Figure \ref{fig:sample:hist:variables}
+on Section \ref{sec:sample:final}. The output class $Y$ is indicated by
+colour, red if a given star is a pulsar or black otherwise. 
+
 \begin{figure}[ht]
-    \begin{itemize}
-        \item $X_0:$ Mean of the integrated profile.
-        \item $X_1:$ Standard deviation of the integrated profile.
-        \item $X_2:$ Excess kurtosis of the integrated profile.
-        \item $X_3:$ Skewness of the integrated profile.
-        \item $X_4:$ Mean of the DM-SNR curve.
-        \item $X_5:$ Standard deviation of the DM-SNR curve.
-        \item $X_6:$ Excess kurtosis of the DM-SNR curve.
-        \item $X_7:$ Skewness of the DM-SNR curve.
-        \item $Y:$ Class 
-    \end{itemize}
-    \caption{Attributes describing a pulsar candidate\label{fig:variables}}
+    \includegraphics[width=\linewidth]{dist}
+    \caption{Projection of the data distribution. \label{fig:dist}}
 \end{figure}
 
-\section{State of the art\label{sec:state_of_art}}
+In this figure it can see that the data has two distinct cloud of points that
+correspond with their classification. For the points labelled false, they clump
+up into an sphere, and get scarser the further they are from the center of it.
+The second cloud of points, corresponding to the identified pulsars, has a flat
+shape which lies down and to the side of the former. The points seem to very
+slightly group away from the non pulsars.
 
-\todo[inline]{State of the art}
-
-\section{Sampling and preproccessing\label{sec:premodel}}
-\subsection{Sampling\label{sec:sample}}
+\subsection{Sampling process\label{sec:sample}}
 
 With any proposed model the goal is to best approximate certain dynamic, having
-no more at one's disposal that any observations of such event. The recolection
-of many of these measures is called a sample. Before applying any technique that
-to tackle the problem at hand, one may first decide how to construct an
-appropiate sample that best represents the desired phenomenom.
+but some sample of such event. Before applying any technique to tackle the
+problem at hand, one may first decide how to construct an appropiate training
+sample that best represents the desired phenomenom so as not to overfit the
+model while retaining the dynamic of the system.
 
-For the current problem we desire to have a representation of equal
-proportionality of the labels over the dataset and any sample of it. Furthermore
-the data is to be split on $3$ mutually exclusive sets, one for training the
-models with a $60\%$ of the original data; and a test and validation sets with
-$20\%$ each. These last $2$ sets will serve to observe the generability
-capacities of the models proposed.
+This sampling is done under a random distribution and it is usually desired to
+have an equal representation of the labels in the sample than that present in
+the original dataset. This being said, the data is to be splitted on $3$
+mutually exclusive sets, one for training the models with $60\%$ of the original
+data; and a test and validation sets with $20\%$ each. These last $2$ sets will
+serve to observe the generability capacities of the models proposed.
 
-The algorithm used to construct these samples is Algorithm~\ref{alg:sample}. In
-this it can be seen that the construction of the sample sets is done
-sequencially, meaning that each set will not have available any of the
-previously selected data and any bias introduced by the sampling method may
-propagate and increase further.
+The sampling for the current document was made by sampling instead an indexing
+of the data with sequencial natural numbers starting from. To avoid the possible
+case of introducing bias on the samples, $3$ sampling distributions where chosen
+in order to compare their results and choose the best performing one. The
+selected distributions being uniform, triangular, and normal distributions. As
+the number of observations is finite, for continous distributions each index $x$
+is given a probability of $f(x)$ (with $f$ being the PDF) and then it is scaled
+so that the sum of the probability over all indices equals $1$. This
+accomodation is made in order to use indistinctively discrete or continuous
+distributions.
+
+For a sample size $N$, the parameters for the before mentioned distributions 
+are chosen as follows:
+\begin{itemize}
+    \item Uniform: spans from $0$ to $N$
+    \item Triangular: mode of $N/2$, spans from $-1$ to $N+1$ so that indices on
+        the extremes get a non zero probability
+    \item Normal: mean of $N/2$, standard deviation of $N/6$
+\end{itemize} 
+
+Each distribution has a corresponding self-information function that measures
+the ``surprisal'' of any outcome. The expected information of a given
+probability distribution is called entropy~\cite{information:borda}. Under these
+definitions one could argue that a distribution with a higher entropy
+corresponds to a better sampling technique, one more informative.
+Figure~\ref{fig:sample:info} then presents the probabily distributions selected
+with their corresponding self-information and entropy.
+
+\begin{figure}[ht]
+    \includegraphics[width=\linewidth]{sample:info}
+    \caption{Example of a figure caption. \label{fig:sample:info}}
+\end{figure}
+
+In the Algorithm~\ref{alg:sample} used to construct the sample groups, it can be
+seen that the construction is done sequencially, meaning that each set will not
+have available any of the previously selected data and any bias introduced by
+the sampling method may propagate to other groups.
 
 \begin{algorithm}[ht]
     $P = \{0.6,\ 0.2,\ 0.2\}$\\
@@ -188,102 +241,54 @@ propagate and increase further.
     } \caption{Sampling algorithm\label{alg:sample}}
 \end{algorithm}
 
-When filling each of our sets as described in Algorithm~\ref{alg:sample}, for
-the $N$ realizations generated from the desired distribution, they are document
-without replacement. This is to comply with the definition of the $3$ sets As
-mutually exclusive. The process of sampling without replacement involves that
-the index realized is removed from the support of the distribution and the
-remaining probabilities are normalized once more to generate the next
-realization.
-
-The sampling for the current paper was made indexing all of the data with
-sequencial natural numbers starting from $0$ and sampling those instead. To
-avoid the possible case of introducing bias on the samples, $3$ sampling
-distributions where chosen to compare their results, these being a uniform
-triangular, and normal distributions. As the number of observations is finite,
-each index $x$ is given a probability of $f(x)$ (with $f$ being the PDF) scaled
-so that the sum of the PDF over all indices equals $1$. This accomodation is
-made in order to use indistinctively discrete or continuous distributions.
-
-For a sample size $N$, the before mentioned sampling for each distribution is
-made as follows:
-\begin{itemize}
-    \item Uniform: spans from $0$ to $N$
-    \item Triangular: mode of $N/2$, spans from $-1$ to $N+1$ so that indices on
-        the extremes get a non zero probability
-    \item Normal: mean of $N/2$, standard deviation of $N/6$
-\end{itemize}
-
-Each distribution has a corresponding self-information function that measures
-the "surprisal" of any outcome. The expected information of a given probability
-distribution is called entropy~\cite{information:borda}. Under these definitions
-one could argue that a distribution with a higher entropy corresponds to a
-better sampling technique, one more informative. Figure~\ref{fig:sample:info}
-presents then the respective PDF's over the indices, with their corresponding
-self-information and entropy, from which we can infer that uniform sampling is
-most desired.
-
-
-\begin{figure}[ht]
-    \includegraphics[width=\linewidth]{sample:info}
-    \caption{Example of a figure caption. \label{fig:sample:info}}
-\end{figure}
+When filling each of the sets as described in the previous algorithm, the $N$
+realizations from the desired distribution are generated without replacement.
+This is to comply with the definition of the $3$ being mutually exclusive. The
+process of sampling without replacement involves that the indices generated are
+removed from the support of the distribution and the probability for the
+remaining points are normalized once again for the next realization.
 
 With the motivation of contrasting the previously obtained results numerically;
-a histogram of every sample is made, higlighting the distribution of the
-selected data over the different sets and the representation of the desired
-labels in each of them as seen in Figure~\ref{fig:sample:hist:index}.
+a histogram of a sample from every PDF is made, higlighting the distribution of
+the selected data over the different groups and, the representation of the
+desired labels in each of them as seen in Figure~\ref{fig:sample:hist:index}.
 
 \begin{figure*}[ht]
     \includegraphics[width=\linewidth]{sample:hist:index}
     \caption{Example of a figure caption. \label{fig:sample:hist:index}}
 \end{figure*}
 
-In this figure it can be seen that the uniform sampling, as expected, results in
-an equal representation of all indices over the $3$ of the desired sets. Also,
-it is possible to note that for both the triangular and normal sampling there is
-an over-representation of the central objects in the training set, while having
-an under-representation of these for the training and validation sets, which may
-lead to an scenario where what the model is trained for has little to no
-relation with what it is tested against.
+
+\subsection{Final sample disposition\label{sec:sample:final}}
+
+As could be seen in Section \ref{sec:sample} with Figure \ref{fig:sample:info}
+the uniform distribution results on the optimal entropy value; furthermore, as
+expected, it results in an equal representation of all indices over the $3$ of
+the desired sets. Contrasting this, it is possible to note that for both the
+triangular and normal sampling there is an over-representation of the central
+objects in the training set, while having an under-representation of these for
+the training and validation sets, which may lead to an scenario where what the
+model is trained for has little to no relation with what it is being tested
+against.
 
 However, regardless of the sampling PDF selected, the distribution of the labels
-over all $3$ sets remains consistent, which may be proof supporting that the
+over all $3$ sets remains consistent, which may be an indicator supporting that the
 dataset was previously scrambled or that the process of collecting the data is
-uniform in nature. This being said, the selected sampling is going to be
-selected as the with the uniform PDF.
+uniform in nature.
 
-In order to better have an idea of the data distribution, in
-Figure~\ref{fig:sample:hist:variables} it is shown how each of the variables
-previously mentioned in \ref{fig:variables} are represented in the partitions.
-Although we can see that all variables are properly sampled in the partitioned
-sets, it is interesting to point out that variables $X_3, X4,$ and $X_7$ seem to
-be extremely bunched up into a single value, with a few outliers far from this
-point. 
+This being said, the uniform sampling was selected as the distribution of
+choice. Then, in order to better have a better idea of how the data is
+distributed over the sets, in Figure~\ref{fig:sample:hist:variables} it is shown
+how each of the variables previously mentioned in \ref{tab:variables} are
+represented in the partitions. Although we can see that all variables are
+properly sampled in the partitioned sets, it is interesting to point out that
+variables $X_3, X_4$ and $X_7$ seem to be extremely bunched up into a single
+value, with a few outliers far from this point. 
 
 \begin{figure*}[ht]
     \includegraphics[width=\linewidth]{sample:hist:variables}
     \caption{Example of a figure caption. \label{fig:sample:hist:variables}}
 \end{figure*}
-
-To further exploring the sample space, Figure \ref{fig:dist} has a projection of
-variables $X_1$, $X_2$ and $X_6$, being these the ones with higher dispersion,
-onto the unitary $3d$ cube of the already normalized variables. The output class
-$Y$ is indicated by colour. 
-
-\begin{figure}[ht]
-    \includegraphics[width=\linewidth]{dist}
-    \caption{Projection of the training data distribution. \label{fig:dist}}
-\end{figure}
-
-In this figure it can see that the data has two distinct cloud of points that
-correspond with their classification. For the points labelled false, they clump
-up into an sphere, and get scarser the further they are from the center of it.
-The second cloud of points, corresponding to the identified pulsars, has a flat
-shape which lies down and to the side of the former. The points seem to very
-slightly group away from the non pulsars.
-
-\subsection{Preprocessing\label{sec:preprocess}}
 
 Before any sampling is done, and not to incur in any special treatment with
 missing data, from the initial labelled dataset with $12528$ entries, $3255$ of
@@ -294,13 +299,13 @@ models, every variable is normalized linearly into a value in the range $[0,1]$;
 and for the output, 2 artificial and opposite boolean variables were created,
 $Y_0$ and $Y_1$, where $Y_0$ is $1$ when the candidate is a pulsar, and $Y_1$ is
 $1$ when it is not. This makes all the sample space and every possible
-observation on it a point in a hypercube of volume 1.
+observation on it a point in a unitary hypercube.
 
-The problem previously described for variables $X_3, X4,$ and $X_7$ in
-Section~\ref{sec:sample} is not going to be tackled in the current work,
-although it could be approaced by using a logarithmic normalization instead of a
-linear one so as to spread the central spike and group the outliers on the
-extrema of the variable range (that being $0$ or $1$).
+The problem previously described for variables $X_3, X_4$ and $X_7$ is not going
+to be tackled in the current work, although it could be approaced by using a
+logarithmic normalization instead of a linear one so as to spread the central
+spike and group the outliers on the extrema of the variable range (that being
+$0$ or $1$).
 
 \section{Supervised learning\label{sec:supervised}} 
 
