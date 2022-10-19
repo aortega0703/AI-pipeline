@@ -76,14 +76,15 @@ In the current paper, data from a specialized pulsar
 catalogue~\cite{pulsar:dataset:lyon}, is approached using multiple Artificial
 Intelligence techniques in order to identify possible pulsar star candidates.
 
+\todo[inline]{Section description}
 In Section \ref{sec:problem} the astronomical phenomenom is described more in
- depth along with the problem to tackle in this. Section \ref{sec:state_of_art}
- Is a short compendium of how different authors have approached the problem
- before. Section \ref{sec:premodel} deals with the steps previous to trying any
- solutions, mostly data exploration and the sampling process. Section
- \ref{sec:supervised} deals with the aprroaches that use the labeling offered
- by the dataset while \ref{sec:unsupervised} tries a blindfolded approach to
- possibly question any wrongly assignated labeling in the dataset.
+depth along with the problem to tackle in this. Section \ref{sec:state_of_art}
+Is a short compendium of how different authors have approached the problem
+before. Section \ref{sec:premodel} deals with the steps previous to trying any
+solutions, mostly data exploration and the sampling process. Section
+\ref{sec:supervised} deals with the aprroaches that use the labeling offered
+by the dataset while \ref{sec:unsupervised} tries a blindfolded approach to
+possibly question any wrongly assignated labeling in the dataset.
 
 \section{The problem\label{sec:problem}}
 
@@ -151,11 +152,11 @@ In the order that they appear on the database, the variables are:
     \caption{Attributes describing a pulsar candidate\label{tab:variables}}
 \end{table}
 
-\section{Conceptual framework\label{sec:framework}}
+\section{Conceptual framework}
 
 \todo[inline]{Conceptual framework}
 
-\section{Methods\label{sec:methods}}
+\section{Methodology\label{sec:methods}}
 
 \subsection{Visualization}
 
@@ -287,7 +288,7 @@ value, with a few outliers far from this point.
 
 \begin{figure*}[ht]
     \includegraphics[width=\linewidth]{sample:hist:variables}
-    \caption{Example of a figure caption. \label{fig:sample:hist:variables}}
+    \caption{Distribution of input variables over sampling \label{fig:sample:hist:variables}}
 \end{figure*}
 
 Before any sampling is done, and not to incur in any special treatment with
@@ -306,6 +307,112 @@ to be tackled in the current work, although it could be approaced by using a
 logarithmic normalization instead of a linear one so as to spread the central
 spike and group the outliers on the extrema of the variable range (that being
 $0$ or $1$).
+
+\section{Results}
+
+\subsection{Linear and logistic regression}
+It is possible to observe in Figure \ref{fig:regression} the output of the model
+for all points against variables $X_1$ and $X_2$. Both the linear and logistic
+models assignated the same class for all points however, the logistic model has
+a much sharper separation between the groups having assignated higher values
+to both.
+
+\begin{figure}[ht]
+    \begin{subfigure}[b]{\linewidth}
+        \includegraphics[width=\linewidth]{regression:train}
+        \caption{Linear and logistic regression for training data
+        \label{fig:regression:train}}
+    \end{subfigure}
+    %
+    \begin{subfigure}[b]{\linewidth}
+        \includegraphics[width=\linewidth]{regression:test}
+        \caption{Linear and logistic regression for test data
+        \label{fig:regression:test}}
+    \end{subfigure}
+    %
+    \begin{subfigure}[b]{\linewidth}
+        \includegraphics[width=\linewidth]{regression:validation}
+        \caption{Linear and logistic regression for validation data
+        \label{fig:regression:validation}}
+    \end{subfigure}
+    \caption{Classification for linear and logistic regression
+        \label{fig:regression}}
+\end{figure}
+
+
+
+\subsection{Performance}
+
+\begin{table}    
+    \begin{subtable}{0.49\linewidth}
+        \csvreader[
+            centered tabular=l|ll,
+            no head,column count=3,
+            table head=  & F & T \\\hline
+        ]{../tables/regression:CM:train.csv}{}%
+        {\ifcsvstrequal{\thecsvrow}{1}{F}{T} & \percentage{\csvcoli} & \percentage{\csvcolii}}%
+        \caption{Confusion matrix for regression on train data\label{tab:regression:CM:train}}
+    \end{subtable}
+    \hfill%
+    \begin{subtable}{0.49\linewidth}
+        \csvreader[
+            centered tabular=l|ll,
+            no head,column count=3,
+            table head=  & F & T \\\hline,
+        ]{../tables/regression:CM:test.csv}{}%
+        {\ifcsvstrequal{\thecsvrow}{1}{F}{T} & \percentage{\csvcoli} & \percentage{\csvcolii}}%
+        \caption{Confusion matrix for regression on test data\label{tab:regression:CM:test}}
+    \end{subtable}
+
+    \begin{subtable}{\linewidth}
+        \csvreader[
+            centered tabular=l|ll,
+            no head,column count=3,
+            table head= & F & T \\\hline,
+            late after line=\\\hline
+        ]{../tables/regression:CM:validation.csv}{}%
+        {\ifcsvstrequal{\thecsvrow}{1}{F}{T} & \percentage{\csvcoli} & \percentage{\csvcolii}}%
+        \caption{Confusion matrix for regression on validation data\label{tab:regression:CM:validation}}
+    \end{subtable}
+    \caption{Confusion matrix for regression models\label{tab:regression:CM}}
+\end{table}
+
+
+\begin{table}
+    \hfill
+    \begin{subtable}{0.45\linewidth}
+        \csvreader[
+            centered tabular=l|l,
+            no head,column count=2,
+            table head= Index & Value \\\hline
+        ]{../tables/regression:index:train.csv}{}%
+        {\csvcoli & \csvcolii}%
+        \caption{Multiple indices on training data\label{tab:regression:index:train}}
+    \end{subtable}
+    \hfill%
+    \begin{subtable}{0.45\linewidth}
+        \csvreader[
+            centered tabular=l|l,
+            no head,column count=2,
+            table head= Index & Value \\\hline
+        ]{../tables/regression:index:test.csv}{}%
+        {\csvcoli & \csvcolii}%
+        \caption{Multiple indices on test data\label{tab:regression:index:test}}
+    \end{subtable}
+    \hfill
+
+    \begin{subtable}{\linewidth}
+        \csvreader[
+            centered tabular=l|l,
+            no head,column count=2,
+            table head= Index & Value \\\hline
+        ]{../tables/regression:index:validation.csv}{}%
+        {\csvcoli & \csvcolii}%
+        \caption{Multiple indices on validation data\label{tab:regression:index:validation}}
+    \end{subtable}
+    \caption{Multiple indices on regression models\label{tab:regression:index}}
+\end{table}
+
 
 \section{Supervised learning\label{sec:supervised}} 
 
@@ -369,118 +476,7 @@ This model can be solved as a linear regression with the substitution:
 Using the known output $Y$ to find $P$, solving for $\beta$ in the new linear
 model, and substituting everything back into the original expression.
 
-After finding the best parameter matrix $\beta$ for the former models, it was
-tested against previously unseen data which results are observed in Figure
-\ref{fig:regression}. In this image we can observe how both models assignated
-the same class for all points but the logistic model has a much sharper
-separation between groups. 
 
-\begin{figure}[ht]
-    \begin{subfigure}[b]{\linewidth}
-        \includegraphics[width=\linewidth]{regression:train}
-        \caption{Linear and logistic regression for training data
-        \label{fig:regression:train}}
-    \end{subfigure}
-    %
-    \begin{subfigure}[b]{\linewidth}
-        \includegraphics[width=\linewidth]{regression:test}
-        \caption{Linear and logistic regression for test data
-        \label{fig:regression:test}}
-    \end{subfigure}
-    %
-    \begin{subfigure}[b]{\linewidth}
-        \includegraphics[width=\linewidth]{regression:validation}
-        \caption{Linear and logistic regression for validation data
-        \label{fig:regression:validation}}
-    \end{subfigure}
-    \caption{Classification for linear and logistic regression
-        \label{fig:regression}}
-\end{figure}
-
-In Table \ref{tab:regression:CM} it can be seen that, as expected the best
-results where obtained in the training (\ref{tab:regression:CM:train}) data with
-a classification error of $2.59\%$ and a pulsar detection of the $72.65\%$;
-while the worst results lie in the testing group with $3.99\%$ with a very poor
-pulsar detectection, with a pulsar detection error of $35.15\%$.
-
-\begin{table}    
-    \begin{subtable}{0.49\linewidth}
-        \csvreader[
-            centered tabular=l|ll,
-            no head,column count=3,
-            table head=  & F & T \\\hline
-        ]{../tables/regression:CM:train.csv}{}%
-        {\ifcsvstrequal{\thecsvrow}{1}{F}{T} & \percentage{\csvcoli} & \percentage{\csvcolii}}%
-        \caption{Confusion matrix for regression on train data\label{tab:regression:CM:train}}
-    \end{subtable}
-    \hfill%
-    \begin{subtable}{0.49\linewidth}
-        \csvreader[
-            centered tabular=l|ll,
-            no head,column count=3,
-            table head=  & F & T \\\hline,
-        ]{../tables/regression:CM:test.csv}{}%
-        {\ifcsvstrequal{\thecsvrow}{1}{F}{T} & \percentage{\csvcoli} & \percentage{\csvcolii}}%
-        \caption{Confusion matrix for regression on test data\label{tab:regression:CM:test}}
-    \end{subtable}
-
-    \begin{subtable}{\linewidth}
-        \csvreader[
-            centered tabular=l|ll,
-            no head,column count=3,
-            table head= & F & T \\\hline,
-            late after line=\\\hline
-        ]{../tables/regression:CM:validation.csv}{}%
-        {\ifcsvstrequal{\thecsvrow}{1}{F}{T} & \percentage{\csvcoli} & \percentage{\csvcolii}}%
-        \caption{Confusion matrix for regression on validation data\label{tab:regression:CM:validation}}
-    \end{subtable}
-    \caption{Confusion matrix for regression models\label{tab:regression:CM}}
-\end{table}
-
-Furthermore, looking at Table \ref{tab:regression:index} it is possible to
-dissern that our models have a good performance except on the sensitivity and
-phi indices. Sensitibity quantifies the true possitive predictions, while phi
-measures the quality of a binary classification. 
-
-The poor results in the correct detection of pulsars may be the result of an
-overrepresentation and therefore a bias towards non pulsar objects in the
-training data, with $1652$ datapoints ($89.1\%$) againts the 202 ($10.8\%$)
-pulsars.
-
-\begin{table}
-    \hfill
-    \begin{subtable}{0.45\linewidth}
-        \csvreader[
-            centered tabular=l|l,
-            no head,column count=2,
-            table head= Index & Value \\\hline
-        ]{../tables/regression:index:train.csv}{}%
-        {\csvcoli & \csvcolii}%
-        \caption{Multiple indices on training data\label{tab:regression:index:train}}
-    \end{subtable}
-    \hfill%
-    \begin{subtable}{0.45\linewidth}
-        \csvreader[
-            centered tabular=l|l,
-            no head,column count=2,
-            table head= Index & Value \\\hline
-        ]{../tables/regression:index:test.csv}{}%
-        {\csvcoli & \csvcolii}%
-        \caption{Multiple indices on test data\label{tab:regression:index:test}}
-    \end{subtable}
-    \hfill
-
-    \begin{subtable}{\linewidth}
-        \csvreader[
-            centered tabular=l|l,
-            no head,column count=2,
-            table head= Index & Value \\\hline
-        ]{../tables/regression:index:validation.csv}{}%
-        {\csvcoli & \csvcolii}%
-        \caption{Multiple indices on validation data\label{tab:regression:index:validation}}
-    \end{subtable}
-    \caption{Multiple indices on regression models\label{tab:regression:index}}
-\end{table}
 
 \subsection{Multilayer perceptron\label{sec:nn}}
 \todo[inline]{nn describe}
