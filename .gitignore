@@ -5,6 +5,8 @@ data/
 report/*
 images/
 tables/
+*.png
+*.csv
 
 !*.tex
 !*.bib
