@@ -1,4 +1,5 @@
 import numpy as np
+import matplotlib.pyplot as plt
 
 def axis_labels(ax, x, y, z=None):
     ax.set_xlabel(x)
@@ -44,7 +45,7 @@ def cluster(ax, X, U, Ud=None, C=None, fuzzy=False,
             F_N += xF_N
 
         # Colors
-        color = lambda N: (c/C_N) * np.ones(N)
+        color = lambda N: (c/C_N) * np.ones(N) + 1
         ax.scatter(*X[:2, xT], U[c, xT], label=c_name,
             s=5, alpha=0.1, c=color(xT_N), cmap="gnuplot", vmin=0, vmax=1)
         ax.scatter(*X[:2, xF], U[c, xF], marker="x",
@@ -61,12 +62,15 @@ def cluster(ax, X, U, Ud=None, C=None, fuzzy=False,
         l._sizes = [30]
         l._alpha = 1
 
-def CM_string(CM):
-    CM[0,:] = CM[0,:]/np.sum(CM[0,:])
-    CM[1,:] = CM[1,:]/np.sum(CM[1,:])
-    CM_s = np.empty((3,3), dtype=object)
-    CM_s[1:, 1:] = np.array([f"{x:.2%}" 
-        for x in CM.reshape(CM.size)]).reshape(CM.shape)
-    CM_s[0,:] = "", "F", "T"
-    CM_s[:,0] = "Actual/Predicted", "F", "T"
-    return CM_s
+def fig_size(y, x): return (x*4, y*4)
+
+def plot(X, U_sets, suptitle):
+    size = fig_size(len(U_sets), len(list(U_sets.values())[0]))
+    fig, ax = plt.subplots(*size, figsize=fig_size(*size), layout="tight",
+        subplot_kw={'projection': '3d'})
+    fig.suptitle(suptitle)
+
+    for r, (name, U) in enumerate(U_sets.items()):
+        for c, (u_name, u) in enumerate(U.items()):
+            cluster(ax[r,c], X[name][0], u, title=u_name)
+    return fig
