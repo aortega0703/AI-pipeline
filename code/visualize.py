@@ -45,11 +45,11 @@ def cluster(ax, X, U, Ud=None, C=None, fuzzy=False,
             F_N += xF_N
 
         # Colors
-        color = lambda N: (c/C_N) * np.ones(N) + 1
+        color = lambda N: ((c + 1)/C_N) * np.ones(N)
         ax.scatter(*X[:2, xT], U[c, xT], label=c_name,
-            s=5, alpha=0.1, c=color(xT_N), cmap="gnuplot", vmin=0, vmax=1)
+            s=5, alpha=0.1, c=color(xT_N), cmap="jet", vmin=0, vmax=1)
         ax.scatter(*X[:2, xF], U[c, xF], marker="x",
-            s=5, alpha=0.1, c=color(xF_N), cmap="gnuplot", vmin=0, vmax=1)
+            s=5, alpha=0.1, c=color(xF_N), cmap="jet", vmin=0, vmax=1)
         if C is not None:
             ax.scatter(*C[:3, c], marker="*", edgecolors="black", 
                 s=40, alpha=1, color = "black", vmin=0, vmax=1)
@@ -65,11 +65,12 @@ def cluster(ax, X, U, Ud=None, C=None, fuzzy=False,
 def fig_size(y, x): return (x*4, y*4)
 
 def plot(X, U_sets, suptitle):
-    size = fig_size(len(U_sets), len(list(U_sets.values())[0]))
+    size = len(U_sets), len(list(U_sets.values())[0])
     fig, ax = plt.subplots(*size, figsize=fig_size(*size), layout="tight",
         subplot_kw={'projection': '3d'})
     fig.suptitle(suptitle)
-
+    if type(ax) != list:
+        ax = np.array([[ax]])
     for r, (name, U) in enumerate(U_sets.items()):
         for c, (u_name, u) in enumerate(U.items()):
             cluster(ax[r,c], X[name][0], u, title=u_name)

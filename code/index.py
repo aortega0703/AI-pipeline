@@ -41,3 +41,11 @@ index = {
         ((TP*TN) - (FP*FN)) / np.sqrt((TP+FP)*(TP+FN)*(TN+FP)*(TN+FN))
 }
 
+def eval(U, Y):
+    I = []
+    for set, u_l in U.items():
+        for name, u in u_l.items():
+            CM = confusion(u, Y[set][1]).flatten()
+            l = np.array([[i(*CM) for i_name, i in index.items()]]).T
+            I.append(l)
+    return np.concatenate(I, axis=1)
