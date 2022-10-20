@@ -39,12 +39,10 @@
 
 \begin{abstract}
     Pulsars are a type of neutron star that need measurement over a prolonged
-    time to assess their presence. In the current paper various Artificial
-    Intelligence algorithms are used in order to predict pulsar star candidates.
-    Multiple supervised and unsupervised algorithms are approached in this,
-    comparing their efficiency. Alonside the predictors developed, the data and
-    results are explored in depth and multiple indices are used to quantify the
-    success of these.
+    time to assess their presence. In the current paper various supervised and
+    unsupervised algorithms are used in order to predict pulsar star candidates.
+    Alonside the predictors developed, the data and results are explored in
+    depth and multiple indices are used to quantify the success of these.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -53,27 +51,25 @@
 
 \section{Introduction\label{sec:intro}} 
 \todo[inline]{check all figure captions}
-It is know that since ancient times humankind humankind has made an effort to
-catalogue the stars visible in the sky, from the $36$ stars listed in the
-\"three stars each\" by the ancient Babylonians in the $2000s\
-B.C.$~\cite{astronomy:history:north}; to the last full-sky catalogue to date
-with over $1.5$ billion objects, the Gaia Data Release 3~\cite{gaia:dr3:esa},
-made available to the public on June 13, 2022, by the European Space Agency.
+Since ancient times humankind has made an effort to catalogue the stars visible
+in the sky; from the $36$ stars listed in the ``three stars each'' by the
+ancient Babylonians in the $2000s\ B.C.$~\cite{astronomy:history:north}, to the
+last full-sky catalogue to date with over $1.5$ billion objects, the Gaia Data
+Release 3~\cite{gaia:dr3:esa}, made available to the public on June 13, 2022, by
+the European Space Agency.
 
 With the advent of modern telescopes and satellites, the capability to detect
 even the dimmest lights from space have reached heights previously unthinkable.
 The gaia catalogue is but one of the many catalogues available to date, which
-serves to illustrate sheer quantity of data currently collected. Current
-telescopes are constantly surveying the sky in search for evermore objects to
-study.
+serves to illustrate sheer quantity of data currently collected. 
 
 This massive volume of data means that most of it will never get to be studied
-by hand by astronomers, instead better focusing their efforts studying object
-that are already known to possess qualities that may result of special interest.
+by the hand of an astronomer, who has to prioritize human effort in
+studying objects that are already known to possess qualities of special interest.
 In order to identify these special observations from the sea of data available,
 multiple techniques have been developed~\cite{pulsar:dataset:explanation:lyon}.
-In the current paper, data from a specialized pulsar
-catalogue~\cite{pulsar:dataset:lyon}, is approached using multiple Artificial
+In the current paper data from a specialized pulsar
+catalogue~\cite{pulsar:dataset:lyon} is approached using multiple Artificial
 Intelligence techniques in order to identify possible pulsar star candidates.
 
 \todo[inline]{Section description}
@@ -86,54 +82,52 @@ solutions, mostly data exploration and the sampling process. Section
 by the dataset while \ref{sec:unsupervised} tries a blindfolded approach to
 possibly question any wrongly assignated labeling in the dataset.
 
-\section{The problem\label{sec:problem}}
+\section{Problem Statement\label{sec:problem}}
 
-The name Pulsar (from\underline{Puls}ating st\underline{ar}) refers to rapidly
+The name Pulsar (from \underline{Puls}ating st\underline{ar}) refers to rapidly
 rotating and strongly magnetized neutron stars~\cite{pulsar:definition:nasa}.
 The magnetic field present in these stars, accelerates particles to high speeds
-around the star, which may ultimately get thrown into the magnetic poles poles
-of the pulsar, heating them. This heat gradient gets to be so high that the
-poles may act as hotspots, radiating massive amounts of heat into space,
-distinctively more than that of the rest of the star. As the star spins, these
-beams of electromagnetic waves (mostly on the X-ray spectrum) go in and out of
+around the star, which ultimately get thrown into the magnetic poles of the
+pulsar, heating them. The heat gradient between the poles and the rest of the
+star gets so high that the poles may act as hotspots, radiating massive amounts
+of heat into space forming two distinctive beams of electromagnetic waves
+(mostly on the X-ray spectrum). As the star spins, these beams go in and out of
 view from earth at extremely regular periods, motion that makes it appear as
 pulsating in the sky, thus, giving it its name.
 
 Pulsars get to occupy an special place in solving a wide range of physical and
 astronomical problems~\cite{pulsar:importance:kramer}. The extreme conditions on
 these allow to test the limits of gravitational theories, solid state physics
-and plasma physics under extreme conditions among others. For most uses one
-needs not to know how pulsars work but treating them as natural clocks with
-stabilities similar to the best atomic clocks over time spans of months or
-years. Correctly identifying these objects presents then a challenge worth
-approaching.
+and plasma physics among others. Pulsars act as natural clocks with stabilities
+similar to the best atomic clocks over time-spans of months or years. Correctly
+identifying these objects presents then a challenge worth approaching.
 
 Although over short periods of time, the signals received from each pulsar
 varies slightly on each rotation~\cite{pulsar:importance:kramer}, it is possible
-to make an appropriate labeling using average measures over longer periods of
-time. In practice however, their dim signals means that almost all detections
-are a result of radio frequency interference and
-noise~\cite{pulsar:dataset:explanation:lyon}. creating the necessity of finding
+to make an appropriate labeling of them using average measures over longer
+periods of time. In practice however, their dim signals means that almost every
+detection is a result of radio frequency interference (RFI) and
+noise~\cite{pulsar:dataset:explanation:lyon}; creating the necessity of finding
 new ways to differentiate real candidates from the rest.
 
 \citet{pulsar:dataset:lyon} provides a dataset which contains a total of $17898$
 data points, $1639$ for them corresponding to real pulsar detections (verified
-by human annotators), and $16259$ detections associated to RFI or noise. The
+by human annotators) and, $16259$ detections associated to RFI or noise. The
 dataset was modified and split in Kaggle~\cite{pulsar:dataset:kaggle} into one
 unlabelled set with $5370$ observations and a labelled set with $12528$
 observations, the latter being the one used on this paper for purposes of
 training, testing, and validation of the techniques used.
 
-As pulsars appear very dimmly in the sky, it is necessary to collect a few
+As previously mentioned, the detection of pulsars necessitates to collect a few
 hundred to thousand of pulses together in order to discern them from the
 background noise, this collection is \textit{folded} into an integrated pulse
-profile~\cite{pulsar:importance:kramer}. The dataset previously mentioned has 8
-continuous variables per pulsar candidate, each with its corresponding binary
-labeling. The first $4$ of them are statistics that describe the integrated
-pulse profile of the star, while the last $4$ are similarly statistics from the
-DM-SNR (Dispersion Measure - Signal to Noise
-Ratio)~\cite{pulsar:dataset:explanation:lyon}. The task being then to decide
-based on these 8 variables if any given object is a possible pulsar or not.
+profile~\cite{pulsar:importance:kramer}. The dataset has 8 continuous variables per
+pulsar candidate, each with its corresponding binary labeling. The first $4$ of
+them are statistics that describe the integrated pulse profile of the star,
+while the last $4$ are similarly statistics from the DM-SNR (Dispersion Measure
+- Signal to Noise Ratio)~\cite{pulsar:dataset:explanation:lyon}. The task being
+then to decide based on these 8 variables if any given object is a possible
+pulsar or not.
 
 In the order that they appear on the database, the variables are:
 
@@ -181,7 +175,7 @@ slightly group away from the non pulsars.
 \subsection{Sampling process\label{sec:sample}}
 
 With any proposed model the goal is to best approximate certain dynamic, having
-but some sample of such event. Before applying any technique to tackle the
+but some samples of such event. Before applying any technique to tackle the
 problem at hand, one may first decide how to construct an appropiate training
 sample that best represents the desired phenomenom so as not to overfit the
 model while retaining the dynamic of the system.
@@ -194,15 +188,15 @@ data; and a test and validation sets with $20\%$ each. These last $2$ sets will
 serve to observe the generability capacities of the models proposed.
 
 The sampling for the current document was made by sampling instead an indexing
-of the data with sequencial natural numbers starting from. To avoid the possible
-case of introducing bias on the samples, $3$ sampling distributions where chosen
-in order to compare their results and choose the best performing one. The
-selected distributions being uniform, triangular, and normal distributions. As
-the number of observations is finite, for continous distributions each index $x$
-is given a probability of $f(x)$ (with $f$ being the PDF) and then it is scaled
-so that the sum of the probability over all indices equals $1$. This
-accomodation is made in order to use indistinctively discrete or continuous
-distributions.
+of the data with sequencial natural numbers starting from 0. To avoid the
+possible case of introducing bias on the samples, $3$ sampling distributions
+where chosen in order to compare their results and choose the best performing
+one. The selected distributions being uniform, triangular, and normal
+distributions. As the number of observations is finite, for continous
+distributions each index $x$ is given a probability of $f(x)$ (with $f$ being
+the PDF) and then it is scaled so that the sum of the probability over all
+indices equals $1$. This accomodation is made in order to use indistinctively
+discrete or continuous distributions.
 
 For a sample size $N$, the parameters for the before mentioned distributions 
 are chosen as follows:
@@ -223,12 +217,12 @@ with their corresponding self-information and entropy.
 
 \begin{figure}[ht]
     \includegraphics[width=\linewidth]{sample:info}
-    \caption{Example of a figure caption. \label{fig:sample:info}}
+    \caption{Analytical properties of various PDF's. \label{fig:sample:info}}
 \end{figure}
 
 In the Algorithm~\ref{alg:sample} used to construct the sample groups, it can be
 seen that the construction is done sequencially, meaning that each set will not
-have available any of the previously selected data and any bias introduced by
+have available any of the previously selected data and, any bias introduced by
 the sampling method may propagate to other groups.
 
 \begin{algorithm}[ht]
@@ -243,8 +237,8 @@ the sampling method may propagate to other groups.
 \end{algorithm}
 
 When filling each of the sets as described in the previous algorithm, the $N$
-realizations from the desired distribution are generated without replacement.
-This is to comply with the definition of the $3$ being mutually exclusive. The
+realizations from the desired distribution are generated without replacement;
+this is to comply with the definition of the $3$ being mutually exclusive. The
 process of sampling without replacement involves that the indices generated are
 removed from the support of the distribution and the probability for the
 remaining points are normalized once again for the next realization.
@@ -256,7 +250,7 @@ desired labels in each of them as seen in Figure~\ref{fig:sample:hist:index}.
 
 \begin{figure*}[ht]
     \includegraphics[width=\linewidth]{sample:hist:index}
-    \caption{Example of a figure caption. \label{fig:sample:hist:index}}
+    \caption{Distribution of indices over data sets. \label{fig:sample:hist:index}}
 \end{figure*}
 
 
@@ -317,6 +311,40 @@ models assignated the same class for all points however, the logistic model has
 a much sharper separation between the groups having assignated higher values
 to both.
 
+% \begin{table}    
+%     \begin{subtable}{0.49\linewidth}
+%         \csvreader[
+%             centered tabular=l|ll,
+%             no head,column count=3,
+%             table head=  & F & T \\\hline
+%         ]{../tables/regression:CM:train.csv}{}%
+%         {\ifcsvstrequal{\thecsvrow}{1}{F}{T} & \percentage{\csvcoli} & \percentage{\csvcolii}}%
+%         \caption{Confusion matrix for regression on train data\label{tab:regression:CM:train}}
+%     \end{subtable}
+%     \hfill%
+%     \begin{subtable}{0.49\linewidth}
+%         \csvreader[
+%             centered tabular=l|ll,
+%             no head,column count=3,
+%             table head=  & F & T \\\hline,
+%         ]{../tables/regression:CM:test.csv}{}%
+%         {\ifcsvstrequal{\thecsvrow}{1}{F}{T} & \percentage{\csvcoli} & \percentage{\csvcolii}}%
+%         \caption{Confusion matrix for regression on test data\label{tab:regression:CM:test}}
+%     \end{subtable}
+
+%     \begin{subtable}{\linewidth}
+%         \csvreader[
+%             centered tabular=l|ll,
+%             no head,column count=3,
+%             table head= & F & T \\\hline,
+%             late after line=\\\hline
+%         ]{../tables/regression:CM:validation.csv}{}%
+%         {\ifcsvstrequal{\thecsvrow}{1}{F}{T} & \percentage{\csvcoli} & \percentage{\csvcolii}}%
+%         \caption{Confusion matrix for regression on validation data\label{tab:regression:CM:validation}}
+%     \end{subtable}
+%     \caption{Confusion matrix for regression models\label{tab:regression:CM}}
+% \end{table}
+
 \begin{figure}[ht]
     \begin{subfigure}[b]{\linewidth}
         \includegraphics[width=\linewidth]{regression:train}
@@ -339,44 +367,7 @@ to both.
         \label{fig:regression}}
 \end{figure}
 
-
-
 \subsection{Performance}
-
-\begin{table}    
-    \begin{subtable}{0.49\linewidth}
-        \csvreader[
-            centered tabular=l|ll,
-            no head,column count=3,
-            table head=  & F & T \\\hline
-        ]{../tables/regression:CM:train.csv}{}%
-        {\ifcsvstrequal{\thecsvrow}{1}{F}{T} & \percentage{\csvcoli} & \percentage{\csvcolii}}%
-        \caption{Confusion matrix for regression on train data\label{tab:regression:CM:train}}
-    \end{subtable}
-    \hfill%
-    \begin{subtable}{0.49\linewidth}
-        \csvreader[
-            centered tabular=l|ll,
-            no head,column count=3,
-            table head=  & F & T \\\hline,
-        ]{../tables/regression:CM:test.csv}{}%
-        {\ifcsvstrequal{\thecsvrow}{1}{F}{T} & \percentage{\csvcoli} & \percentage{\csvcolii}}%
-        \caption{Confusion matrix for regression on test data\label{tab:regression:CM:test}}
-    \end{subtable}
-
-    \begin{subtable}{\linewidth}
-        \csvreader[
-            centered tabular=l|ll,
-            no head,column count=3,
-            table head= & F & T \\\hline,
-            late after line=\\\hline
-        ]{../tables/regression:CM:validation.csv}{}%
-        {\ifcsvstrequal{\thecsvrow}{1}{F}{T} & \percentage{\csvcoli} & \percentage{\csvcolii}}%
-        \caption{Confusion matrix for regression on validation data\label{tab:regression:CM:validation}}
-    \end{subtable}
-    \caption{Confusion matrix for regression models\label{tab:regression:CM}}
-\end{table}
-
 
 \begin{table}
     \hfill
