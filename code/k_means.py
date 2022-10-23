@@ -17,7 +17,7 @@ def eval(X, C, norm=norm_space.norm["Euclidean2"]):
     return U
 
 
-def run(k, X, epsilon, norm=norm_space.norm["Euclidean2"], cost=None):
+def train(k, X, epsilon, norm=norm_space.norm["Euclidean2"], cost=None):
     if cost is None:
         def cost(X, U, C, norm=norm_space.norm["Euclidean2"]):
             return np.sum(norm(X - C[:, np.argmax(U, axis=0)]))

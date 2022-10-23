@@ -1,33 +1,24 @@
-import norm_space
-
 import numpy as np
-from numpy.linalg import inv
 
+regression = {
+    "Linear": (
+        lambda Y: Y,
+        lambda Y: Y
+    ),
+    "Logistic": (
+        lambda Y: np.log((Y*0.98 + 0.1)/(1-(Y*0.98 + 0.1))),
+        lambda Y: 1/(1+np.exp(-Y))
+    )
+}
 
-def linear(X, Y):
+def train(X, Y, k = regression["Linear"]):
     X = np.concatenate([np.ones((1, X.shape[1])), X], axis=0)
-    B = Y @ X.T @ inv(X @ X.T)
-    E = norm_space.norm["Euclidean2"](Y - (B @ X))
-    return B, np.sum(E)
+    Y = k[0](Y)
+    B = Y @ X.T @ np.linalg.inv(X @ X.T)
+    return B
 
 
-def linear_eval(X, B):
-    X = np.concatenate([np.ones((1, X.shape[1])), X], axis=0)
-    return B @ X
-
-
-def logistic(X, P):
-    P = (P * 0.98) + 0.01
-    Y = np.log(P/(1-P))
-    B, E = linear(X, Y)
-    X = np.concatenate([np.ones((1, X.shape[1])), X], axis=0)
-    Y_out = B @ X
-    P_out = 1/(1+np.exp(-Y_out))
-    E = norm_space.norm["Euclidean2"](P - P_out)
-    return B, np.sum(E)
-
-
-def logistic_eval(X, B):
+def eval(X, B, k = regression["Linear"]):
     X = np.concatenate([np.ones((1, X.shape[1])), X], axis=0)
     Y = B @ X
-    return 1/(1+np.exp(-Y))
+    return k[1](Y)

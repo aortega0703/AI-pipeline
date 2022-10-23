@@ -15,7 +15,7 @@ def train(X, Y, I):
     np1 = np.sum(left, axis=1) - p1
     p2 = np.array([np.sum(Y[0, row]) for row in right])
     np2 = np.sum(right, axis=1) - p2
-    L = H(np.array([p1/N, np1/N, p2/N, np2/N]).T)
+    L = H(np.array([p1/N, np1/N, p2/N, np2/N]).T * 0.98 + 0.1)
     c = np.squeeze(np.argmax(L))
     return [(c, float(split[c])), train(X, Y, left[c, :]), train(X, Y, right[c, :])] 
 

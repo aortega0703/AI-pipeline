@@ -70,7 +70,7 @@ def eval(X, W, B=None, phi=sigmoid, classify=False, Yd=0):
     Y, _, E, _ = feedforward(X, W, B, phi, Yd)
     return Y[-1], E
 
-def train(train_set, epochs, hidden, eta, phi=sigmoid,
+def train(train_set, epochs, hidden, eta, tolerance, phi=sigmoid,
           classify=False, test_set={}, W=None, B=None):
     neurons = [train_set[0].shape[0], *hidden, train_set[1].shape[0]]
     k = len(neurons) - 1
@@ -109,6 +109,8 @@ def train(train_set, epochs, hidden, eta, phi=sigmoid,
             E[t_name].append(t_E)
         
         if (e+1) % (epochs*0.1) == 0:
-           print(f"{e+1}/{epochs} ({e/epochs:.0%}):")
-           print(f"\tMean Gradient Length: {np.mean(delta_curr)}")
+           print(f"{e+1}/{epochs} ({e/epochs:.0%})")
+
+        if len(delta) > 2 and np.abs(np.sum(delta[-2])/np.sum(delta[-1]) - 1) < tolerance:
+            break
     return W, B, delta, E
