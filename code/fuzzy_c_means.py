@@ -19,7 +19,7 @@ def eval(X, C, m, norm=norm_space.norm["Euclidean2"]):
     return U
 
 
-def run(c, X, m, epsilon, cost=None):
+def train(c, X, m, epsilon, cost=None):
     if cost is None:
         def cost(X, U, C, m, norm=norm_space.norm["Euclidean2"]):
             D = norm_space.dist_matrix(C, X, norm)
