@@ -148,6 +148,7 @@ In the order that they appear on the database, the variables are:
 
 \section{Conceptual framework}
 
+
 \todo[inline]{Conceptual framework}
 
 \section{Methodology\label{sec:methods}}
@@ -253,7 +254,6 @@ desired labels in each of them as seen in Figure~\ref{fig:sample:hist:index}.
     \caption{Distribution of indices over data sets. \label{fig:sample:hist:index}}
 \end{figure*}
 
-
 \subsection{Final sample disposition\label{sec:sample:final}}
 
 As could be seen in Section \ref{sec:sample} with Figure \ref{fig:sample:info}
@@ -305,45 +305,23 @@ $0$ or $1$).
 \section{Results}
 
 \subsection{Linear and logistic regression}
+
+\begin{table*}
+    \csvreader[
+        centered tabular=l|cccccccc,
+        column count=9,
+        no head,
+        late after first line = {\\\hline},
+    ]{../tables/index.csv}{}%
+    {\csvlinetotablerow}%
+    \caption{Multiple indices on training data\label{tab:index}}
+\end{table*}
+
 It is possible to observe in Figure \ref{fig:regression} the output of the model
 for all points against variables $X_1$ and $X_2$. Both the linear and logistic
 models assignated the same class for all points however, the logistic model has
 a much sharper separation between the groups having assignated higher values
 to both.
-
-% \begin{table}    
-%     \begin{subtable}{0.49\linewidth}
-%         \csvreader[
-%             centered tabular=l|ll,
-%             no head,column count=3,
-%             table head=  & F & T \\\hline
-%         ]{../tables/regression:CM:train.csv}{}%
-%         {\ifcsvstrequal{\thecsvrow}{1}{F}{T} & \percentage{\csvcoli} & \percentage{\csvcolii}}%
-%         \caption{Confusion matrix for regression on train data\label{tab:regression:CM:train}}
-%     \end{subtable}
-%     \hfill%
-%     \begin{subtable}{0.49\linewidth}
-%         \csvreader[
-%             centered tabular=l|ll,
-%             no head,column count=3,
-%             table head=  & F & T \\\hline,
-%         ]{../tables/regression:CM:test.csv}{}%
-%         {\ifcsvstrequal{\thecsvrow}{1}{F}{T} & \percentage{\csvcoli} & \percentage{\csvcolii}}%
-%         \caption{Confusion matrix for regression on test data\label{tab:regression:CM:test}}
-%     \end{subtable}
-
-%     \begin{subtable}{\linewidth}
-%         \csvreader[
-%             centered tabular=l|ll,
-%             no head,column count=3,
-%             table head= & F & T \\\hline,
-%             late after line=\\\hline
-%         ]{../tables/regression:CM:validation.csv}{}%
-%         {\ifcsvstrequal{\thecsvrow}{1}{F}{T} & \percentage{\csvcoli} & \percentage{\csvcolii}}%
-%         \caption{Confusion matrix for regression on validation data\label{tab:regression:CM:validation}}
-%     \end{subtable}
-%     \caption{Confusion matrix for regression models\label{tab:regression:CM}}
-% \end{table}
 
 \begin{figure}[ht]
     \begin{subfigure}[b]{\linewidth}
