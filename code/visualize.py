@@ -52,7 +52,7 @@ def cluster(ax, X, U, Ud=None, C=None, fuzzy=False,
             s=5, alpha=0.1, c=color(xF_N), cmap="jet", vmin=0, vmax=1)
         if C is not None:
             ax.scatter(*C[:3, c], marker="*", edgecolors="black", 
-                s=40, alpha=1, color = "black", vmin=0, vmax=1)
+                s=40, alpha=1, color = "black")
 
     axis_labels(ax, *axes_names[:3])
     if compare:

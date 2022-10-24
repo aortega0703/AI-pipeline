@@ -22,5 +22,5 @@ def eval(X, B, k = regression["Linear"]):
     X = np.concatenate([np.ones((1, X.shape[1])), X], axis=0)
     Y = B @ X
     U = (k[1](Y))[None, :]
-    U = np.concatenate([U >= 0, U < 0], axis=0)
-    return U
+    U_bool = np.concatenate([U >= 0, U < 0], axis=0)
+    return U_bool, U

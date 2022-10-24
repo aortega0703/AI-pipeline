@@ -45,7 +45,7 @@ def eval(U_l, Y):
     I = np.empty((len(index)+1, len(U_l)+1), dtype=object)
     I[1:, 0] = list(index.keys())
     for U_i, (U_name, U) in enumerate(U_l.items()):
-        CM = confusion(U, Y).flatten()
+        CM = confusion(U, Y, supervise=False).flatten()
         I[0, U_i+1] = U_name
         I[1:, U_i+1] = [i(*CM) for i in index.values()]
     return I

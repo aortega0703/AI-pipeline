@@ -1,0 +1,61 @@
+The name Pulsar (from \underline{Puls}ating st\underline{ar}) refers to rapidly
+rotating and strongly magnetized neutron stars~\cite{pulsar:definition:nasa}.
+The magnetic field present in these stars, accelerates particles to high speeds
+around the star, which ultimately get thrown into the magnetic poles of the
+pulsar, heating them. The heat gradient between the poles and the rest of the
+star gets so high that the poles may act as hotspots, radiating massive amounts
+of heat into space forming two distinctive beams of electromagnetic waves
+(mostly on the X-ray spectrum). As the star spins, these beams go in and out of
+view from earth at extremely regular periods, motion that makes it appear as
+pulsating in the sky, thus, giving it its name.
+
+Pulsars get to occupy an special place in solving a wide range of physical and
+astronomical problems~\cite{pulsar:importance:kramer}. The extreme conditions on
+these allow to test the limits of gravitational theories, solid state physics
+and plasma physics among others. Pulsars act as natural clocks with stabilities
+similar to the best atomic clocks over time-spans of months or years. Correctly
+identifying these objects presents then a challenge worth approaching.
+
+Although over short periods of time, the signals received from each pulsar
+varies slightly on each rotation~\cite{pulsar:importance:kramer}, it is possible
+to make an appropriate labeling of them using average measures over longer
+periods of time. In practice however, their dim signals means that almost every
+detection is a result of radio frequency interference (RFI) and
+noise~\cite{pulsar:dataset:explanation:lyon}; creating the necessity of finding
+new ways to differentiate real candidates from the rest.
+
+\citet{pulsar:dataset:lyon} provides a dataset which contains a total of $17898$
+data points, $1639$ for them corresponding to real pulsar detections (verified
+by human annotators) and, $16259$ detections associated to RFI or noise. The
+dataset was modified and split in Kaggle~\cite{pulsar:dataset:kaggle} into one
+unlabelled set with $5370$ observations and a labelled set with $12528$
+observations, the latter being the one used on this paper for purposes of
+training, testing, and validation of the techniques used.
+
+As previously mentioned, the detection of pulsars necessitates to collect a few
+hundred to thousand of pulses together in order to discern them from the
+background noise, this collection is \textit{folded} into an integrated pulse
+profile~\cite{pulsar:importance:kramer}. The dataset has 8 continuous variables per
+pulsar candidate, each with its corresponding binary labeling. The first $4$ of
+them are statistics that describe the integrated pulse profile of the star,
+while the last $4$ are similarly statistics from the DM-SNR (Dispersion Measure
+- Signal to Noise Ratio)~\cite{pulsar:dataset:explanation:lyon}. The task being
+then to decide based on these 8 variables if any given object is a possible
+pulsar or not.
+
+In the order that they appear on the database, the variables are:
+
+\begin{table}[ht]
+    \begin{tabular}{l|l}
+        $X_0:$ & Mean of the integrated profile.\\
+        $X_1:$ & Standard deviation of the integrated profile.\\
+        $X_2:$ & Excess kurtosis of the integrated profile.\\
+        $X_3:$ & Skewness of the integrated profile.\\
+        $X_4:$ & Mean of the DM-SNR curve.\\
+        $X_5:$ & Standard deviation of the DM-SNR curve.\\
+        $X_6:$ & Excess kurtosis of the DM-SNR curve.\\
+        $X_7:$ & Skewness of the DM-SNR curve.\\
+        $Y:$   & Class 
+    \end{tabular}
+    \caption{Attributes describing a pulsar candidate\label{tab:variables}}
+\end{table}
