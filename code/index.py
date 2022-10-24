@@ -42,9 +42,10 @@ index = {
 }
 
 def eval(U_l, Y):
-    I = []
-    for U in U_l:
+    I = np.empty((len(index)+1, len(U_l)+1), dtype=object)
+    I[1:, 0] = list(index.keys())
+    for U_i, (U_name, U) in enumerate(U_l.items()):
         CM = confusion(U, Y).flatten()
-        l = [i(*CM) for i in index.values()]
-        I.append(np.array(l))
-    return np.concatenate(I, axis=1)
+        I[0, U_i+1] = U_name
+        I[1:, U_i+1] = [i(*CM) for i in index.values()]
+    return I
