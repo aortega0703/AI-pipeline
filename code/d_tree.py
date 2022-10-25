@@ -29,3 +29,10 @@ def eval(X, T, I):
     left = I & (X[root[0], :] <= root[1])
     right = I & (X[root[0], :] > root[1])
     return eval(X, T[1], left) | eval(X, T[2], right)
+
+def depth(T):
+    if type(T) != list or len(T) == 1:
+        return 1
+    left = depth(T[1])
+    right = depth(T[2])
+    return np.max([left, right]) + 1

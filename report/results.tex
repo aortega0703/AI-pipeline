@@ -1,9 +1,16 @@
 
+\subsection{VC dimension}
+Both the linear regression and support vector machine with linear kernel are
+linear separators, then they have a $VC_dim$ of $d+1$ with $d$ being the number
+of features. For the current problem this is then $9$ and therefore require
+    
+
+
 \subsection{Support vector machine}
 
 The SVM algorithm relies on solving an optimization problem, and in the current
-implementation this is done using gradient descent. The cost function result
-of the use of Lagrange multipliers to solve the problem, can be seen in
+implementation this is done using gradient descent. The cost function result of
+the use of Lagrange multipliers to solve the problem, can be seen in
 Figure~\ref{fig:svn:cost} that is converging.
 
 \begin{figure*}[t]

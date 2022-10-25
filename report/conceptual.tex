@@ -1,3 +1,37 @@
+\subsection{PAC learning}
+when trying to approximate a concept $C$, it might be helpful to think of it and
+its possible hypothesis models $H$ as sets of pairs of all possible inputs and
+their respective output. However in real life it is rare the situation where
+every possible observation is availabe, but instead just a sample of it. This
+subset of the concept is hereon called $S$. It is possible to then define:
+
+\begin{align}
+    err_p(h) &= \frac{\left|h \ominus C\right|}{\left|C\right|}\\
+    err_S(h) &= \frac{\left|S\cap (h \ominus C)\right|}{\left|S\right|}
+\end{align}
+
+Where $err_p(h)$ is the generalization error and $err_S(h)$ is the training
+error of hypothesis $h$. They represent the rate of error over the whole concept
+$C$ and the rate of error over the data available $S$ respectively. Then:
+
+\begin{equation}
+    \eta \geq \frac{1}{\varepsilon}\left(\ln{(H) +
+        \ln{\left(\frac{1}{\delta}\right)}}\right)
+\end{equation}
+
+Where with a sample size of $\eta$, there will be a probability of at least
+$1-\delta$ to get an error rate less than $\varepsilon$.
+
+For a finite hypothesis class $H$, the VC dimension will be defined as:
+
+\begin{equation}
+    VC_{dim}(H) \leq log_2(H)
+\end{equation}
+
+This value will serve as a notion of complexity of a given hypothesis class or
+the maximum sample size that it can separate. For linear decision functions the
+VC dimention equals that of the number of parameters.
+
 \subsection{Supervised learning\label{sec:supervised}} 
 
 Supervised learning is called when both inputs and outputs for a given problem
