@@ -1,13 +1,15 @@
 
 \subsection{Support vector machine}
 
-\begin{figure*}[ht]
-    \begin{subfigure}[t]{0.49\linewidth}
-        \includegraphics[width=\linewidth]{svn:cost.png}
-        \caption{Cost function of the optimization problem for SVM
-        \label{fig:svn:cost}}
-    \end{subfigure}
+The SVM algorithm relies on solving an optimization problem, and in the current
+implementation this is done using gradient descent. The cost function result
+of the use of Lagrange multipliers to solve the problem, can be seen in
+Figure~\ref{fig:svn:cost} that is converging.
 
+\begin{figure*}[t]
+    \includegraphics[width=\linewidth]{svn:cost.png}
+    \caption{Cost function of the optimization problem for SVM
+    \label{fig:svn:cost}}
 \end{figure*}
 
 \subsection{Neural network}
@@ -21,6 +23,9 @@ training.
 
 Figure \ref{fig:nn} holds then the most note worthy of these networks
 being, minimum error, maximum error, minimum gradient and maximum gradient.
+In this it is possible to observe that the network with maximum error is so
+because it started near a local minima. Also, not necessarily more layers and
+neurons equivalates to a better network, \todo[inline]{Describe image}  
 
 \begin{figure*}[ht]
     \begin{subfigure}[t]{0.49\linewidth}
@@ -58,106 +63,46 @@ be performed point-wise where each point is marked as right or wrong; but
 instead comparing pair of points and checking if they are in the same, or
 different classes according to the labels. This being said, Tables
 \ref{tab:index:train} through \ref{tab:index:validation} show how each of the
-classification methods stack up to a variety of indices.
+classification methods stack up to a variety of indices. Highest index values
+where achieved by the neural network with minimum error followed closely by the
+one with minimum gradient. It is possible that the $\phi$ score of mountain
+clustering, substractive clustering, K-means and fuzzy C-means is caused because
+they have more than $2$ classes and the index measures only the quality of
+binary classification.
 
 \begin{table*}
     \csvreader[
-        centered tabular=l|cccccccc,
-        column count=9,
+        centered tabular=l|ccccccccccc,
+        column count=12,
         no head,
         late after first line = {\\\hline},
-    ]{../tables/index.csv}{}%
+    ]{../tables/index:train.csv}{}%
     {\csvlinetotablerow}%
     \caption{Multiple indices on training data\label{tab:index:train}}
 \end{table*}
 
 \begin{table*}
     \csvreader[
-        centered tabular=l|cccccccc,
-        column count=9,
+        centered tabular=l|ccccccccccc,
+        column count=12,
         no head,
         late after first line = {\\\hline},
-    ]{../tables/index.csv}{}%
+    ]{../tables/index:test.csv}{}%
     {\csvlinetotablerow}%
     \caption{Multiple indices on testing data\label{tab:index:test}}
 \end{table*}
 
 \begin{table*}
     \csvreader[
-        centered tabular=l|cccccccc,
-        column count=9,
+        centered tabular=l|ccccccccccc,
+        column count=12,
         no head,
         late after first line = {\\\hline},
-    ]{../tables/index.csv}{}%
+    ]{../tables/index:validation.csv}{}%
     {\csvlinetotablerow}%
     \caption{Multiple indices on validation data\label{tab:index:validation}}
 \end{table*}
 
-\section{Supervised learning\label{sec:supervised}} 
 
-Supervised learning is called when both inputs and outputs for a given problem
-are used in order to mimic the underlying behaviour and simulate its dynamic
-\cite{supervised:definition:rusell}. The ouput for our problem is present and is
-revised by actual human annotators, so a supervised approach may be a good start
-to analyse the data. In the following sections multiple supervised techniques
-are described and compared agains multiple indices.
-
-\subsection{Linear and logistic regression\label{sec:regression}}
-
-Linear regression is probably the simplest way of tuning parameters to follow
-given data. It assumes a matrix $X$ of $n$ measured variables over $p$
-observations, a matrix $Y$ with $m$ output variables over the same opulation,
-and a matrix $\beta$ relating them. It assumes, as its name implies, that the
-dynamic of the model can be expressed as a linear equation of the form: 
-%
-\begin{equation}\label{eq:linear}
-    \overset{(m\times p)}{Y}
-    = \overset{(m\times n)}{\beta} \overset{(n\times p)}{X}
-\end{equation}
-%
-Where it is desired to find the best parameter $\beta$. This can be done making
-use of the pseudo inverse of $X$ as follows:
-%
-\begin{align*}
-    \overset{(m\times p)}{Y}
-        &= \overset{(m\times n)}{\beta} \overset{(n\times p)}{X}\\
-    \overset{(m\times p)}{Y}\overset{(p\times n)}{X^T}
-        &= \overset{(m\times p)}{\beta X} \overset{(p\times n)}{X^T}\nonumber\\
-    \overset{(m\times n)}{Y X^T} \overset{(n\times n)}{\left(X X^T\right)^{-1}}
-        &= \overset{(m\times n)}{\beta}
-\end{align*}
-%
-It's important to note that usually a row of $1$s is added to $X$ in order to
-account for a constant term in the model. A similar model is logistic
-regression, which deals with data in the range $(0, 1)$ that have a great
-distinction between then, making it especially useful for problems of
-classification. It assumes a model of the form:
-%
-\begin{equation}
-    Y = \frac{1}{1+\exp{(-\beta X)}}
-\end{equation}
-%
-Where addition, division, and exponentiation are defined elementwise; which
-imposes multiple and simultaneous sigmoid functions of $1$ output. 
-This model can be solved as a linear regression with the substitution:
-%
-\begin{align*}
-    Y &= \frac{1}{1+e^{(-\beta X)}}\nonumber\\
-        &= \frac{e^{(\beta X)}}{1+e^{(\beta X)}}\\
-    Y+Ye^{(\beta X)}
-        &= e^{(\beta X)}\\
-    Y &= (1-Y) e^{(\beta X)}\\
-    \frac{Y}{1-Y} &= e^{(\beta X)}\\
-    \ln{\left(\frac{Y}{1-Y}\right)} &= \beta X\\
-        &= P
-\end{align*}
-%
-Using the known output $Y$ to find $P$, solving for $\beta$ in the new linear
-model, and substituting everything back into the original expression.
-
-
-
-\subsection{Multilayer perceptron\label{sec:nn}}
-\todo[inline]{nn describe}
 
 \section{Unsupervised leaning\label{sec:unsupervised}}

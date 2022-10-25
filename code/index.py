@@ -17,14 +17,14 @@ def confusion(U1, U2, supervise = True, compact=True):
     B = np.argmax(U2, axis=0, keepdims=True) != 0
     if not supervise:
         equal_pw = lambda A: ~(A.T @ ~A) * ~(~A.T @ A)
-        A = equal_pw(U1)
-        B = equal_pw(U2)
+        A = equal_pw(A)
+        B = equal_pw(B)
     CM = np.array([
             [np.sum(~A * ~B), np.sum(A * ~B)],
             [np.sum(~A * B), np.sum(A * B)]])
     if not supervise:
         CM[1, 1] -= p
-        CM /= 2
+        CM = CM/2
     return CM
 
 
