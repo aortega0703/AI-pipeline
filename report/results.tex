@@ -24,8 +24,16 @@ training.
 Figure \ref{fig:nn} holds then the most note worthy of these networks
 being, minimum error, maximum error, minimum gradient and maximum gradient.
 In this it is possible to observe that the network with maximum error is so
-because it started near a local minima. Also, not necessarily more layers and
-neurons equivalates to a better network, \todo[inline]{Describe image}  
+because it started near a local minima. 
+
+In all of the figures it can be seen that the first gradients to converge are
+closer to the output layer, making the optimization process of a network with
+more layers than needed a tedious and slow one. This, along with the observation
+that the best networks are those with $2$ or fewer hidden layers, provides
+evidence that not necessarily more layers equivalates to a better network. On
+what respects to number of neurons, there doesn't seem to be any obvious link,
+with the minimum error net having $5$ per layer and all of the other ones having
+$3$ per layer.
 
 \begin{figure*}[ht]
     \begin{subfigure}[t]{0.49\linewidth}
@@ -55,12 +63,46 @@ neurons equivalates to a better network, \todo[inline]{Describe image}
         \label{fig:nn}}
 \end{figure*}
 
+\subsection{Unsupervised learning}
+For Figures \ref{fig:mountain} and \ref{fig:substractive}, both unsupervised
+methods sugest the clustering using 3 distinct groups, which although they may
+have a few points might sugest the appeareance of another object of interest
+different from a pulsar. The validity of these results are to be evaluated by
+experts in the field.
+
+\begin{figure}[t]
+    \includegraphics[width=\linewidth]{mountain.png}
+    \caption{Cluster centers and membership using mountain clustering
+    \label{fig:mountain}}
+\end{figure}
+\begin{figure}[t]
+    \includegraphics[width=\linewidth]{substractive.png}
+    \caption{Cluster centers and membership using substractive clustering
+    \label{fig:substractive}}
+\end{figure}
+
+After running K-means and fuzzy C-means on the dataset with $3$ clusters each
+(as suggested by the previous algorithms), it is possible to note that the
+number of members of the third new group rises considerably, although still
+staying much smaller htan the other $2$.
+
+\begin{figure}[t]
+    \includegraphics[width=\linewidth]{kmeans.png}
+    \caption{Cluster centers and membership using K-means with K=3
+    \label{fig:kmeans}}
+\end{figure}
+\begin{figure}[t]
+    \includegraphics[width=\linewidth]{fuzzycmeans.png}
+    \caption{Cluster centers and membership using Fuzzy C-means with C=3 
+    \label{fig:fuzzycmeans}}
+\end{figure}
+
 \subsection{Performance}
 
-Unsupervised methods may end up having a different number of classes than those
-provided by the dataset. For this reason all comparisons of performance will not
-be performed point-wise where each point is marked as right or wrong; but
-instead comparing pair of points and checking if they are in the same, or
+The unsupervised methods ended up having a different number of classes than
+those provided by the dataset. For this reason all comparisons of performance
+will not be performed point-wise where each point is marked as right or wrong;
+but instead comparing pair of points and checking if they are in the same, or
 different classes according to the labels. This being said, Tables
 \ref{tab:index:train} through \ref{tab:index:validation} show how each of the
 classification methods stack up to a variety of indices. Highest index values
