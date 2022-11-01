@@ -1,0 +1,69 @@
+\documentclass[journal]{IEEEtran}
+
+\IEEEoverridecommandlockouts
+% The preceding line is only needed to identify funding in the first footnote.
+% If that is unneeded, please comment it out.
+\usepackage[backend=biber,style=ieee,natbib=true]{biblatex} 
+\bibliography{references.bib}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithm2e}
+\usepackage{graphicx}
+\graphicspath{ {../images/} }
+\usepackage{subcaption}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\setlength {\marginparwidth }{2cm}
+\usepackage{todonotes}
+\usepackage{booktabs}
+\usepackage{csvsimple}
+\usepackage{siunitx}
+
+\newcommand\percentage[2][round-precision = 2]{% default precision: 2
+    \SI[round-mode = places,
+        scientific-notation = fixed, fixed-exponent = 0,
+        output-decimal-marker={.}, #1]{#2e2}{\percent}%
+}
+\begin{document}
+
+\title{Automated Labeling of Pulsar Star Candidates}
+
+\author{\IEEEauthorblockN{Andrés Felipe Ortega Montoya}
+    \IEEEauthorblockA{\textit{Mathematical Engineering} \\
+        Medellín, Colombia \\
+        aortega7@eafit.edu.co}}
+
+\maketitle
+
+\begin{abstract}
+    \input{abstract.tex}
+\end{abstract}
+
+\begin{IEEEkeywords}
+    AI, Pulsar, Labeling
+\end{IEEEkeywords}
+
+\section{Introduction\label{sec:intro}} 
+\input{intro.tex}
+
+\section{Problem Statement\label{sec:problem}}
+\input{problem.tex}
+
+\section{Conceptual framework\label{sec:conceptual}}
+\input{conceptual.tex}
+
+\section{Methodology\label{sec:methods}}
+\input{methods.tex}
+
+\section{Results\label{sec:results}}
+\input{results.tex}
+
+\section{Analysis\label{sec:analysis}}
+\input{analysis.tex}
+
+\section{Conclusion\label{sec:conclusion}}
+\input{conclusion.tex}
+
+\printbibliography
+\end{document}
+    

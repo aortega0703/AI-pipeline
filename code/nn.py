@@ -109,8 +109,14 @@ def train(train_set, epochs, hidden, eta, tolerance, phi=sigmoid,
             E[t_name].append(t_E)
         
         if (e+1) % (epochs*0.1) == 0:
-           print(f"{e+1}/{epochs} ({e/epochs:.0%})")
+           print(f"{e+1}/{epochs} ({e/epochs:.0%})", end="\r")
 
         if len(delta) > 2 and np.abs(np.sum(delta[-2])/np.sum(delta[-1]) - 1) < tolerance:
             break
     return W, B, delta, E
+
+def autoencoder(X, c_neurons, epochs=1000, partition={}):
+    W, B, delta_nn, E_nn = train((X, X),
+            hidden=[c_neurons], classify=False,
+            epochs=epochs, tolerance=0, eta=0.9, test_set=partition)
+    return W, B, delta_nn, E_nn
