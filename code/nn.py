@@ -71,7 +71,7 @@ def eval(X, W, B=None, phi=sigmoid, classify=False, Yd=0):
     return Y[-1], E
 
 def code(X, W, B, phi=sigmoid):
-    return phi(W @ X + B)
+    return phi[0](W[1] @ X + B[1])
 
 def train(train_set, epochs, hidden, eta, tolerance, phi=sigmoid,
           classify=False, test_set={}, W=None, B=None):
