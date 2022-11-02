@@ -70,6 +70,9 @@ def eval(X, W, B=None, phi=sigmoid, classify=False, Yd=0):
     Y, _, E, _ = feedforward(X, W, B, phi, Yd)
     return Y[-1], E
 
+def code(X, W, B, phi=sigmoid):
+    return phi(W @ X + B)
+
 def train(train_set, epochs, hidden, eta, tolerance, phi=sigmoid,
           classify=False, test_set={}, W=None, B=None):
     neurons = [train_set[0].shape[0], *hidden, train_set[1].shape[0]]
