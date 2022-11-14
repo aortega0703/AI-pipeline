@@ -1,12 +1,18 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+# Sets the name for axis x, y and z 
 def axis_labels(ax, x, y, z=None):
     ax.set_xlabel(x)
     ax.set_ylabel(y)
     if z != None:
         ax.set_zlabel(z)
 
+# Plots a cloud of points in 3d with colours depending on their classification.
+# If Ud is proportioned, wrongly classified data will be marked with an X and
+# be accounted for in the legend. If C is used, it will plot those points
+# as cluster centers in bold *. If fuzzy is True, then the plot is instead of
+# 2 axis only and the third one is their degree of belonging.
 def cluster(ax, X, U, Ud=None, C=None, fuzzy=False,
                  title="Clusters",
                  axes_names=["$X_0$", "$X_1$", "$X_2$"],
