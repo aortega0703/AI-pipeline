@@ -10,12 +10,14 @@ def axis_labels(ax, x, y, z=None):
     if z != None:
         ax.set_zlabel(z)
 
+# Probability density functions with argument N. Generates x random realizations
 pdf = {
     "Uniform": lambda x, N: sci.stats.uniform.pdf(x, 0, N),
     "Triangular": lambda x, N: sci.stats.triang.pdf(x, 0.5, -1, N+1),
     "Normal": lambda x, N: sci.stats.norm.pdf(x, N//2, N//6)
 }
 
+# Returns the CDF, self-information and entropy of a group of PDFs
 def pdf_info(indices, pdf_names = None):
     if pdf_names is None:
         pdf_names = pdf.keys()
@@ -28,6 +30,7 @@ def pdf_info(indices, pdf_names = None):
         pdf_set[name]["H"] = np.sum(-F*np.log2(F))
     return pdf_set
 
+# From an index column, samples 3 sets for training, testing, and validation
 def sample(indices, sets=None, pdf_names=None):
     N_S = len(indices)
     if sets is None:
