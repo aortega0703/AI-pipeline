@@ -1,5 +1,6 @@
 import numpy as np
 
+# Different kernels and their definitions.
 kernel = {
     "Linear" :
         lambda X, Y:
@@ -13,6 +14,7 @@ kernel = {
                 np.linalg.norm(X.T[:, None, :] - Y.T[None,:,:], axis=2))
 }
 
+# Runs SVM to fit a set XY. Solves the optimization problem with gradient descent
 def train(X, Y, epochs, tolerance, eta=1, K=kernel["Linear"]):
     Y = np.argmax(Y, axis=0, keepdims=True).T*2-1
     dots = Y * K(X, X) * Y.T
@@ -30,6 +32,7 @@ def train(X, Y, epochs, tolerance, eta=1, K=kernel["Linear"]):
     W = np.sum(K(X.T * alpha,Y) , axis=1, keepdims=True)
     return W, alpha, cost
 
+# Assigns a category to every X given the side of the SVM hyperplane they land in
 def eval(X, alpha, X_train, Y_train, K=kernel["Linear"]):
     Y_train = np.argmax(Y_train, axis=0, keepdims=True).T*2-1
     Y = np.sum(alpha * Y_train * K(X_train, X), axis=0, keepdims=True)
