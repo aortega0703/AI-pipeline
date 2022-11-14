@@ -3,7 +3,12 @@ import norm_space
 import numpy as np
 import itertools as iter
 
-def train(X, sigma, beta, epsilon=0, n=None, norm=norm_space.norm["Euclidean2"], substractive=False):
+# Runs mountain clustering algorithm as described originally in
+# doi:10.1109/21.299710. If the parameter "substractive" is set to True, then
+# instead of choosing a mesh of n^d as starting points, it chooses the original
+# data points.
+def train(X, sigma, beta, epsilon=0, n=None, norm=norm_space.norm["Euclidean2"],
+    substractive=False):
     def f(v, a): return np.exp(-norm(v)/(2 * a**2))
     if substractive or n is None:
         points = [v[:, None] for v in X.T]
