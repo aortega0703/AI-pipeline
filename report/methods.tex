@@ -1,22 +1,23 @@
 \subsection{Visualization}
 
-In order to start exploring the sample space, Figure \ref{fig:dist} has a
-projection of variables $X_1$, $X_2$ and $X_6$, these being selected for their
-greater dispersion as will be discused in Figure \ref{fig:sample:hist:variables}
-on Section \ref{sec:sample:final}. The output class $Y$ is indicated by
-colour, red if a given star is a pulsar or black otherwise. 
+In order to have a better idea of the disposition of the space,
+Figure \ref{fig:pair} has a projection of every pair of variables, while
+Figure \ref{fig:umap} contains a UMAP projection of the data.
+
+\begin{figure*}[ht]
+    \includegraphics[width=\linewidth]{pair}
+    \caption{Pairwise projection of the data. \label{fig:pair}}
+\end{figure*}
 
 \begin{figure}[ht]
-    \includegraphics[width=\linewidth]{dist}
-    \caption{Projection of the data distribution. \label{fig:dist}}
+    \includegraphics[width=\linewidth]{umap}
+    \caption{UMAP Projection of the data. \label{fig:umap}}
 \end{figure}
 
-In this figure it can see that the data has two distinct cloud of points that
-correspond with their classification. For the points labelled false, they clump
-up into an sphere, and get scarser the further they are from the center of it.
-The second cloud of points, corresponding to the identified pulsars, has a flat
-shape which lies down and to the side of the former. The points seem to very
-slightly group away from the non pulsars.
+While every pairwise projecttion shows a clear separation between classes, the
+UMAP projection shows the possitive class appended to the tail of the negative
+class. This might imply that although there is a clear distiction of the general
+class, the border between them is fuzzy and might be harder to pin down.
 
 \subsection{Sampling process\label{sec:sample}}
 
