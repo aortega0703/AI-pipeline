@@ -68,16 +68,16 @@ def cluster(ax, X, U, Ud=None, C=None, fuzzy=False,
         l._sizes = [30]
         l._alpha = 1
 
-def fig_size(y, x): return (x*4, y*4)
+# def fig_size(y, x): return (x*4, y*4)
 
-def plot(X, U_sets, suptitle):
-    size = len(U_sets), len(list(U_sets.values())[0])
-    fig, ax = plt.subplots(*size, figsize=fig_size(*size), layout="tight",
-        subplot_kw={'projection': '3d'})
-    fig.suptitle(suptitle)
-    if type(ax) != list:
-        ax = np.array([[ax]])
-    for r, (name, U) in enumerate(U_sets.items()):
-        for c, (u_name, u) in enumerate(U.items()):
-            cluster(ax[r,c], X[name][0], u, title=u_name)
-    return fig
+# def plot(X, U_sets, suptitle):
+#     size = len(U_sets), len(list(U_sets.values())[0])
+#     fig, ax = plt.subplots(*size, figsize=fig_size(*size), layout="tight",
+#         subplot_kw={'projection': '3d'})
+#     fig.suptitle(suptitle)
+#     if type(ax) != list:
+#         ax = np.array([[ax]])
+#     for r, (name, U) in enumerate(U_sets.items()):
+#         for c, (u_name, u) in enumerate(U.items()):
+#             cluster(ax[r,c], X[name][0], u, title=u_name)
+#     return fig
