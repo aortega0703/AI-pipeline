@@ -68,7 +68,7 @@ def cluster(ax, X, U, Ud=None, C=None, fuzzy=False,
         l._sizes = [30]
         l._alpha = 1
 
-# def fig_size(y, x): return (x*4, y*4)
+def fig_size(y, x): return (x*4, y*4)
 
 # def plot(X, U_sets, suptitle):
 #     size = len(U_sets), len(list(U_sets.values())[0])
