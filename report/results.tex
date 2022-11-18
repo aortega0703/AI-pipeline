@@ -1,76 +1,11 @@
+Figures \ref{fig:mountain} and \ref{fig:substractive} show the result of running
+mountain clustering and substractive clustering on the training data. These
+algorithms are designed to find how many (and where) cluster centers are
+present to then assign cluster membership according with minimum
+distance. For the present problem both methods suggested the appeareance of 3
+cluster centers which may suggest the appeareance of another object of interest
+in the data.
 
-\subsection{VC dimension}
-Both the linear regression and support vector machine with linear kernel are
-linear separators, then they have a $VC_dim$ of $d+1$ with $d$ being the number
-of features. For the current problem this is then $9$ and therefore require
-    
-
-
-\subsection{Support vector machine}
-
-The SVM algorithm relies on solving an optimization problem, and in the current
-implementation this is done using gradient descent. The cost function result of
-the use of Lagrange multipliers to solve the problem, can be seen in
-Figure~\ref{fig:svn:cost} that is converging.
-
-\begin{figure*}[t]
-    \includegraphics[width=\linewidth]{svn:cost.png}
-    \caption{Cost function of the optimization problem for SVM
-    \label{fig:svn:cost}}
-\end{figure*}
-
-\subsection{Neural network}
-
-Neural networks are blackbox models that one may not know with precise certainty
-what meta parameters to use for each problem. So in order to explore a small
-part of the space and find the best network configuration, multiple nets where
-trained. The meta parameters to vary are \textit{number of layers, number of
-neurons per layer,} and \textit{learning rate}, all with 2500 epochs of
-training. 
-
-Figure \ref{fig:nn} holds then the most note worthy of these networks
-being, minimum error, maximum error, minimum gradient and maximum gradient.
-In this it is possible to observe that the network with maximum error is so
-because it started near a local minima. 
-
-In all of the figures it can be seen that the first gradients to converge are
-closer to the output layer, making the optimization process of a network with
-more layers than needed a tedious and slow one. This, along with the observation
-that the best networks are those with $2$ or fewer hidden layers, provides
-evidence that not necessarily more layers equivalates to a better network. On
-what respects to number of neurons, there doesn't seem to be any obvious link,
-with the minimum error net having $5$ per layer and all of the other ones having
-$3$ per layer.
-
-\begin{figure*}[ht]
-    \begin{subfigure}[t]{0.49\linewidth}
-        \includegraphics[width=\linewidth]{nn:err:min.png}
-        \caption{Gradient and error for the minimal error NN
-        \label{fig:nn:err:min}}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[t]{0.49\linewidth}
-        \includegraphics[width=\linewidth]{nn:err:max.png}
-        \caption{Gradient and error for the maximal error NN
-        \label{fig:nn:err:max}}
-    \end{subfigure}
-    
-    \begin{subfigure}[b]{0.49\linewidth}
-        \includegraphics[width=\linewidth]{nn:grad:min.png}
-        \caption{Gradient and error for the minimal gradient NN
-        \label{fig:nn:grad:min}}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[b]{0.49\linewidth}
-        \includegraphics[width=\linewidth]{nn:grad:max.png}
-        \caption{Gradient and error for the maximal gradient NN
-        \label{fig:nn:grad:max}}
-    \end{subfigure}
-    \caption{Gradient and error of the most notable NN obtained 
-        \label{fig:nn}}
-\end{figure*}
-
-\subsection{Unsupervised learning}
 For Figures \ref{fig:mountain} and \ref{fig:substractive}, both unsupervised
 methods sugest the clustering using 3 distinct groups, which although they may
 have a few points might sugest the appeareance of another object of interest
