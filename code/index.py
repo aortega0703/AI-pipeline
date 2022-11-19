@@ -76,3 +76,18 @@ def DB(X, U, norm = norm_space.norm["Euclidean2"]):
             curr_max = np.max([curr_max, curr])
         acum += curr_max
     return acum/n
+
+def dunn(X, U, norm = norm_space.norm["Euclidean2"]):
+    n = U.shape[0]
+    U = np.argmax(U, axis = 0)
+    C = np.array([np.mean(X[:, U==i], axis=1) for i in range(n)]).T
+
+    num = np.inf
+    den = -np.inf
+    for i in range(n):
+        den = np.max([den, 
+            np.max(norm_space.dist_matrix(X[:, U==i], X[:, U==i]))])
+        for j in range(i+1, n):
+            num = np.min([num,
+                norm(C[:, [i]] - C[:, [j]])[0]])
+    return num/den
