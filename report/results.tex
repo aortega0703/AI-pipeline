@@ -6,12 +6,6 @@ distance. For the present problem both methods suggested the appeareance of 3
 cluster centers which may suggest the appeareance of another object of interest
 in the data.
 
-For Figures \ref{fig:mountain} and \ref{fig:substractive}, both unsupervised
-methods sugest the clustering using 3 distinct groups, which although they may
-have a few points might sugest the appeareance of another object of interest
-different from a pulsar. The validity of these results are to be evaluated by
-experts in the field.
-
 \begin{figure}[t]
     \includegraphics[width=\linewidth]{mountain.png}
     \caption{Cluster centers and membership using mountain clustering
@@ -26,7 +20,7 @@ experts in the field.
 After running K-means and fuzzy C-means on the dataset with $3$ clusters each
 (as suggested by the previous algorithms), it is possible to note that the
 number of members of the third new group rises considerably, although still
-staying much smaller htan the other $2$.
+staying much smaller than the other $2$.
 
 \begin{figure}[t]
     \includegraphics[width=\linewidth]{kmeans.png}
@@ -40,53 +34,51 @@ staying much smaller htan the other $2$.
 \end{figure}
 
 \subsection{Performance}
+In order to evaluate the performance of each of the clustering methods, the 
+Davies–Bouldin index, and Dunn index were run on the results obtained. The
+Silhouette index was implemented but not run on these as the time complexity
+($O(N^2)$ with $N$ the number of points) is prohibitively costly. 
 
-The unsupervised methods ended up having a different number of classes than
-those provided by the dataset. For this reason all comparisons of performance
-will not be performed point-wise where each point is marked as right or wrong;
-but instead comparing pair of points and checking if they are in the same, or
-different classes according to the labels. This being said, Tables
-\ref{tab:index:train} through \ref{tab:index:validation} show how each of the
-classification methods stack up to a variety of indices. Highest index values
-where achieved by the neural network with minimum error followed closely by the
-one with minimum gradient. It is possible that the $\phi$ score of mountain
-clustering, substractive clustering, K-means and fuzzy C-means is caused because
-they have more than $2$ classes and the index measures only the quality of
-binary classification.
+For the DB index an smaller value indicates a better clustering while the Dunn
+index puts the better consideration on the highest value. Both indices measure
+the ratio of intra cluster distance with intercluster distance, although in 
+different ways.
 
-\begin{table*}
-    \csvreader[
-        centered tabular=l|ccccccccccc,
-        column count=12,
-        no head,
-        late after first line = {\\\hline},
-    ]{../tables/index:train.csv}{}%
-    {\csvlinetotablerow}%
-    \caption{Multiple indices on training data\label{tab:index:train}}
-\end{table*}
+\begin{table}
+    \begin{tabular}
+        
+    \end{tabular}
+\end{table}
 
-\begin{table*}
-    \csvreader[
-        centered tabular=l|ccccccccccc,
-        column count=12,
-        no head,
-        late after first line = {\\\hline},
-    ]{../tables/index:test.csv}{}%
-    {\csvlinetotablerow}%
-    \caption{Multiple indices on testing data\label{tab:index:test}}
-\end{table*}
+% \begin{table*}
+%     \csvreader[
+%         centered tabular=l|ccccccccccc,
+%         column count=12,
+%         no head,
+%         late after first line = {\\\hline},
+%     ]{../tables/index:train.csv}{}%
+%     {\csvlinetotablerow}%
+%     \caption{Multiple indices on training data\label{tab:index:train}}
+% \end{table*}
 
-\begin{table*}
-    \csvreader[
-        centered tabular=l|ccccccccccc,
-        column count=12,
-        no head,
-        late after first line = {\\\hline},
-    ]{../tables/index:validation.csv}{}%
-    {\csvlinetotablerow}%
-    \caption{Multiple indices on validation data\label{tab:index:validation}}
-\end{table*}
+% \begin{table*}
+%     \csvreader[
+%         centered tabular=l|ccccccccccc,
+%         column count=12,
+%         no head,
+%         late after first line = {\\\hline},
+%     ]{../tables/index:test.csv}{}%
+%     {\csvlinetotablerow}%
+%     \caption{Multiple indices on testing data\label{tab:index:test}}
+% \end{table*}
 
-
-
-\section{Unsupervised leaning\label{sec:unsupervised}}
+% \begin{table*}
+%     \csvreader[
+%         centered tabular=l|ccccccccccc,
+%         column count=12,
+%         no head,
+%         late after first line = {\\\hline},
+%     ]{../tables/index:validation.csv}{}%
+%     {\csvlinetotablerow}%
+%     \caption{Multiple indices on validation data\label{tab:index:validation}}
+% \end{table*}
