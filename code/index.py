@@ -1,3 +1,5 @@
+import norm_space
+
 import numpy as np
 
 
@@ -55,3 +57,22 @@ def eval(U_l, Y):
         I[0, U_i+1] = U_name
         I[1:, U_i+1] = [i(*CM) for i in index.values()]
     return I
+
+# Given a set of points X with their respective classification U, evaluates the
+# Davies–Bouldin index
+def DB(X, U, norm = norm_space.norm["Euclidean2"]):
+    n = U.shape[0]
+    U = np.argmax(U, axis=0)
+    C = np.array([np.mean(X[:, U==i], axis=1) for i in range(n)]).T
+    sigma = [np.mean(norm(X[:, U==i] - C[:, [i]])) for i in range(n)]
+
+    acum = 0
+    for i in range(n):
+        curr_max = -np.inf
+        for j in range(n):
+            if i == j:
+                continue
+            curr = (sigma[i] + sigma[j]) / norm(C[:,i] - C[:,j])[0]
+            curr_max = np.max([curr_max, curr])
+        acum += curr_max
+    return acum/n
