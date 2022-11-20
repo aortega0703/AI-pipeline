@@ -18,9 +18,10 @@ in the data.
 \end{figure}
 
 After running K-means and fuzzy C-means on the dataset with $3$ clusters each
-(as suggested by the previous algorithms), it is possible to note that the
-number of members of the third new group rises considerably, although still
-staying much smaller than the other $2$.
+(as suggested by the previous algorithms), it is possible to note in Figures
+\ref{fig:kmeans} and \ref{fig:fuzzycmeans} that the number of members of the
+third new group rises considerably, although still staying much smaller than the
+other $2$.
 
 \begin{figure}[t]
     \includegraphics[width=\linewidth]{kmeans.png}
@@ -31,6 +32,21 @@ staying much smaller than the other $2$.
     \includegraphics[width=\linewidth]{fuzzycmeans.png}
     \caption{Cluster centers and membership using Fuzzy C-means with C=3 
     \label{fig:fuzzycmeans}}
+\end{figure}
+
+Finally, observing Figure \ref{fig:dbscan}, the technique groups the data on 2
+clusters as suggested by the dataset provider. It is possible to see that the
+clusteing is composed of a central, main cluster in red, surrounded by another
+more scarse cluster in green. Although these clusters may resemble the Negative
+and Possitive classes, it is important to remember that this method is dependant
+on the number of neighbours necessary to create a cluster, and thus, is
+succeptible to the density of the provided data, which as we may remember, there
+is very few of it for the possitive class.
+
+\begin{figure}[t]
+    \includegraphics[width=\linewidth]{DBSCAN.png}
+    \caption{Cluster centers and membership using K-means with K=3
+    \label{fig:dbscan}}
 \end{figure}
 
 \subsection{Performance}
