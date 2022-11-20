@@ -6,16 +6,16 @@ distance. For the present problem both methods suggested the appeareance of 3
 cluster centers which may suggest the appeareance of another object of interest
 in the data.
 
-\begin{figure}[t]
+\begin{figure*}[ht]
     \includegraphics[width=\linewidth]{mountain.png}
     \caption{Cluster centers and membership using mountain clustering
     \label{fig:mountain}}
-\end{figure}
-\begin{figure}[t]
+\end{figure*}
+\begin{figure*}[ht]
     \includegraphics[width=\linewidth]{substractive.png}
     \caption{Cluster centers and membership using substractive clustering
     \label{fig:substractive}}
-\end{figure}
+\end{figure*}
 
 After running K-means and fuzzy C-means on the dataset with $3$ clusters each
 (as suggested by the previous algorithms), it is possible to note in Figures
@@ -23,16 +23,16 @@ After running K-means and fuzzy C-means on the dataset with $3$ clusters each
 third new group rises considerably, although still staying much smaller than the
 other $2$.
 
-\begin{figure}[t]
+\begin{figure*}[ht]
     \includegraphics[width=\linewidth]{kmeans.png}
     \caption{Cluster centers and membership using K-means with K=3
     \label{fig:kmeans}}
-\end{figure}
-\begin{figure}[t]
+\end{figure*}
+\begin{figure*}[ht]
     \includegraphics[width=\linewidth]{fuzzycmeans.png}
     \caption{Cluster centers and membership using Fuzzy C-means with C=3 
     \label{fig:fuzzycmeans}}
-\end{figure}
+\end{figure*}
 
 Finally, observing Figure \ref{fig:dbscan}, the technique groups the data on 2
 clusters as suggested by the dataset provider. It is possible to see that the
@@ -43,11 +43,11 @@ on the number of neighbours necessary to create a cluster, and thus, is
 succeptible to the density of the provided data, which as we may remember, there
 is very few of it for the possitive class.
 
-\begin{figure}[t]
+\begin{figure*}[t]
     \includegraphics[width=\linewidth]{DBSCAN.png}
     \caption{Cluster centers and membership using K-means with K=3
     \label{fig:dbscan}}
-\end{figure}
+\end{figure*}
 
 \subsection{Performance}
 In order to evaluate the performance of each of the clustering methods, the 
@@ -60,44 +60,37 @@ index puts the better consideration on the highest value. Both indices measure
 the ratio of intra cluster distance with intercluster distance, although in 
 different ways.
 
-Tables \ref{tab:external:train} through \ref{tab:external:train} contain the
-previously mentioned indices for all methods. It is to note that the DBSCAN 
-achieved the worst scores, which may not be an accurate reflection of its
-performance as it can separate data without the necessity of centers, while the
-previous indices do. This may lead to poor scores of "hollow" of moon shaped
-clusters regardless if the original data suggest that agrupation. The best 
-performing techniques were mountain and substractive clustering, the former with
-better DB index while the latter has a better Dunn index. With this in mind
-it might be prefereable to choose the mountain clustering as it has a Dunn index
-not far of from that of the substractive clustering, or if computational capacity
-is limited, it may be better to choose substractive clustering as it runs
-at a much faster pace achieving similar results.
+Table \ref{tab:external} contains the previously mentioned indices for all
+methods. It is to note that the DBSCAN achieved the worst scores, which may not
+be an accurate reflection of its performance as it can separate data without the
+necessity of centers, while the previous indices do. This may lead to poor
+scores of "hollow" of moon shaped clusters regardless if the original data
+suggest that agrupation. The best performing techniques were mountain and
+substractive clustering, the former with better DB index while the latter has a
+better Dunn index. With this in mind it might be prefereable to choose the
+mountain clustering as it has a Dunn index not far of from that of the
+substractive clustering, or if computational capacity is limited, it may be
+better to choose substractive clustering as it runs at a much faster pace
+achieving similar results.
 
 \begin{table}
     \begin{tabular}{l|lllll}
-             & Mountain & Substractive & K-means & C-means & DBSCAN\\\hline
+        \hline & Mountain & Substractive & K-means & C-means & DBSCAN\\\hline
         DB   & 0.3064 & 0.3701 & 1.1039 & 1.0938 & 3.4720\\
         Dunn & 0.1516 & 0.1783 & 0.0158 & 0.0161 & 0.0170
     \end{tabular}
-    \caption{Internal indices for Train data\label{tab:external:train}}
-\end{table}
-
-\begin{table}
     \begin{tabular}{l|lllll}
-             & Mountain & Substractive & K-means & C-means & DBSCAN\\\hline
+        \hline\hline & Mountain & Substractive & K-means & C-means & DBSCAN\\\hline
         DB   & 0.3178 & 0.3904 & 1.0164 & 1.0028 & 3.6715\\
         Dunn & 0.1618 & 0.1740 & 0.0175 & 0.0181 & 0.0189
     \end{tabular}
-    \caption{Internal indices for Test data\label{tab:external:test}}
-\end{table}
-
-\begin{table}
+    
     \begin{tabular}{l|lllll}
-             & Mountain & Substractive & K-means & C-means & DBSCAN\\\hline
+        \hline\hline & Mountain & Substractive & K-means & C-means & DBSCAN\\\hline
         DB   & 0.2939 & 0.3820 & 1.0651 & 1.0618 & 3.5887\\
-        Dunn & 0.1574 & 0.1651 & 0.0146 & 0.0149 & 0.0200
+        Dunn & 0.1574 & 0.1651 & 0.0146 & 0.0149 & 0.0200\\\hline 
     \end{tabular}
-    \caption{Internal indices for Validation data\label{tab:external:validation}}
+    \caption{Internal indices for Train, Test, and Validation data\label{tab:external}}
 \end{table}
 
 % \begin{table*}
