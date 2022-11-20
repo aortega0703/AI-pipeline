@@ -5,6 +5,7 @@ data/
 report/*
 images/
 tables/
+anfis/
 *.png
 *.csv
 
